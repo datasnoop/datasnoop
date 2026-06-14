@@ -1,0 +1,42 @@
+schema: spec-driven
+
+context: |
+  DataSnoop is an open-source, self-hosted observability platform for
+  independent developers and small teams operating cost-conscious infrastructure.
+  Its first product outcome is single-service incident investigation: identify
+  error-prone endpoints and correlate a failing operation with its logs and host context.
+  OTLP is the preferred external telemetry contract, but OpenTelemetry concepts
+  remain hidden behind an opinionated default UX. The initial Go SDK is a reference
+  and dogfooding implementation, not the boundary of the target market.
+  Canonical project context lives in docs/product/, current work and deferred
+  opportunities in docs/roadmap/, and architectural rationale in docs/decisions/.
+  All persisted repository output and source code must be written in English,
+  including identifiers, package and module names, APIs, database schemas,
+  variables, functions, types, comments, errors, logs, and tests. Agent-user
+  interaction may use the user's preferred language.
+
+rules:
+  proposal:
+    - Write the artifact entirely in English.
+    - Define a user-observable outcome and explicit non-goals.
+    - Reference deferred work without turning it into current scope.
+  specs:
+    - Write every purpose, requirement, and scenario entirely in English.
+    - Name capabilities by durable behavior; never use D0, D1, D2, MVP, or phase labels.
+    - Describe externally observable requirements and scenarios, not package structure.
+  design:
+    - Write the artifact entirely in English.
+    - Distinguish external OTLP contracts, DataSnoop's normalized domain model, and persistence.
+    - Record alternatives, failure behavior, compatibility boundaries, and follow-up triggers.
+  tasks:
+    - Write every task and verification statement entirely in English.
+    - Organize work as small verifiable increments with explicit validation.
+    - Preserve an end-to-end vertical slice before optional breadth.
+
+operations:
+  apply:
+    guidance:
+      - Read AGENTS.md and docs/roadmap/current.md at the start of every iteration.
+      - Follow the Ralph loop checkpoint discipline and persist verified progress.
+      - Write all source code, identifiers, APIs, schemas, comments, errors, logs, and tests in English.
+      - Never overwrite unrelated user changes.
