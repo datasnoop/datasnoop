@@ -129,6 +129,30 @@ would couple visual decisions more tightly to component markup. A complete UI
 suite would provide ready-made components but would constrain the product's
 visual identity and add components beyond the current investigation journey.
 
+### 10. Verify behavior with risk-appropriate test layers
+
+Each behavior uses the smallest test layer that proves its relevant risk rather
+than duplicating the same assertion across every layer. Unit tests cover pure
+domain rules, normalization, limits, calculations, and serialization. Component
+tests cover Lounge loading, empty, populated, degraded, and interactive states.
+
+Integration tests are required when behavior crosses a process, network,
+database, migration, gRPC, GraphQL, or SSE boundary. Contract tests are required
+for public OTLP behavior and use fixtures or independent exporters. Resilience
+tests cover bounded queues, timeouts, retries, overload, slow clients, and
+persistence failure. End-to-end tests prove the complete diagnostic journey.
+
+Pull-request validation runs fast unit, component, contract, and short-lived
+containerized integration tests. The final acceptance stage runs the full
+end-to-end journey, failure injection, and repeatable load profiles. Load and
+retention-concurrency testing is not duplicated in every pull request because
+its purpose is operational characterization rather than fast regression
+feedback.
+
+**Alternative:** Requiring every test layer for every change would appear more
+uniform but would duplicate assertions, slow feedback, and obscure which risk a
+test is meant to control.
+
 ## Risks / Trade-offs
 
 - **[The supported OTLP subset may surprise exporters]** → publish a support matrix, use partial success, and test official exporters; never drop silently.

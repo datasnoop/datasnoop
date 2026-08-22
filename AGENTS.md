@@ -67,3 +67,17 @@ Before delivering planning work:
 openspec status --change <change>
 openspec validate <change>
 ```
+
+## Git workflow
+
+Use a short-lived branch and a pull request for every change to `main`. The
+repository uses a simple mainline flow; do not introduce `develop`, `release/*`,
+or `hotfix/*` branches unless the workflow is explicitly revised.
+
+Use Conventional Commits. Prefer these branch prefixes: `feat/`, `fix/`,
+`chore/`, `docs/`, `refactor/`, `test/`, `ci/`, and `codex/`. Keep the branch
+prefix `codex/` for Codex-created branches.
+
+Before requesting review, run the relevant local checks. A pull request may be
+merged into `main` only after its required CI checks pass and its review policy
+is satisfied.

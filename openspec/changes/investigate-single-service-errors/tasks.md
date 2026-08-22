@@ -1,3 +1,15 @@
+## Cross-cutting test directive
+
+Each task SHALL add and execute the smallest test layer that proves its changed
+behavior. A task that crosses a process, network, database, migration, gRPC,
+GraphQL, or SSE boundary SHALL include an integration test. A task that changes
+a public OTLP contract SHALL include contract or conformance coverage. A task
+that changes failure, timeout, queue, retry, overload, or slow-client behavior
+SHALL include resilience coverage. User-facing Lounge behavior SHALL include
+component or end-to-end coverage. Load and retention-concurrency profiles remain
+in task 8.4 unless an earlier task explicitly changes a declared operational
+limit.
+
 ## 1. Contracts and project foundation
 
 - [x] 1.1 Establish the approved Go module/workspace and frontend layout without overwriting the pre-existing `go.mod` deletion, and verify the repository's baseline build and test commands run or report only expected empty-project results

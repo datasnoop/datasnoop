@@ -132,6 +132,9 @@ openspec validate investigate-single-service-errors --strict
 
 All repository content and source code must be written in English. Agent-user interaction may use the user's preferred language.
 
+See the [Git workflow](docs/development/git-workflow.md) for branch naming,
+Conventional Commits, pull-request expectations, and the mainline policy.
+
 ## Project status
 
 The first OpenSpec change, [`investigate-single-service-errors`](openspec/changes/investigate-single-service-errors/), has complete and strictly validated planning artifacts. Its project-layout foundation is in place, but no runnable product exists yet.
