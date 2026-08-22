@@ -54,3 +54,14 @@ The ingestion contract SHALL be verifiable using an official OpenTelemetry expor
 #### Scenario: Independent exporter submits supported signals
 - **WHEN** a conforming independent exporter sends the documented supported subset
 - **THEN** the resulting service, operations, logs and metrics are available with the same semantics as equivalent data sent by an official DataSnoop SDK
+
+### Requirement: Explicit duplicate delivery behavior
+The system SHALL tolerate OTLP retransmission without corrupting accepted telemetry, SHALL apply documented signal-specific identity rules, and MUST NOT inflate endpoint summaries when the same identifiable HTTP operation is delivered more than once.
+
+#### Scenario: Identifiable operation is retransmitted
+- **WHEN** an exporter resends an HTTP operation with the same service, environment, trace identifier and span identifier after an uncertain acknowledgement
+- **THEN** the system retains one logical operation and its endpoint Rate, Errors and Duration summaries count that operation once
+
+#### Scenario: Records have no reliable identity
+- **WHEN** two accepted records have equivalent content but the supported signal provides no reliable identity that proves they are the same record
+- **THEN** the system treats them as independent records according to its documented signal policy instead of silently collapsing them by content or payload hash

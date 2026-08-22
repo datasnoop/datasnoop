@@ -54,3 +54,14 @@ The Lounge SHALL provide a bounded live view of newly accepted logs and error op
 #### Scenario: Live delivery is interrupted
 - **WHEN** the live connection is lost or the viewer cannot keep up
 - **THEN** the Lounge shows that live data may be incomplete and provides a recovery action
+
+### Requirement: Investigation during supported ingest load
+The system SHALL keep the historical incident journey available and semantically correct while receiving telemetry within a published workload profile for a declared hardware budget, and SHALL expose degradation rather than silently presenting incomplete data when that supported envelope is exceeded.
+
+#### Scenario: User investigates during supported load
+- **WHEN** telemetry matching a published supported profile is being ingested and a user follows the endpoint-to-occurrence-to-logs-to-host journey
+- **THEN** endpoint summaries match the profile's known dataset and the occurrence, correlated logs and host context remain available within the published response budget
+
+#### Scenario: Workload exceeds the supported envelope
+- **WHEN** ingest or query demand exceeds the declared capacity and the system cannot keep the investigation current within its published budget
+- **THEN** the Lounge indicates delayed, incomplete or degraded data and preserves a recovery path instead of presenting stale results as complete

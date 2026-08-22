@@ -62,6 +62,18 @@ Items in this document are valid but outside the current outcome. Their presence
 
 **Resumption trigger:** the investigation flow receives trustworthy data and exposes a stable error condition for end-to-end validation.
 
+## Durable downstream delivery
+
+**State:** `deferred`
+
+**Motivation:** guarantee delivery and replay for alerts, webhooks, integrations, or consumers running outside the DataSnoop process.
+
+**Why not now:** the initial Live View is recoverable from authoritative history and does not require a transactional outbox or durable event bus.
+
+**Dependencies:** stable post-commit event identities; alert or integration contracts; retry, retention, and dead-letter policies.
+
+**Resumption trigger:** a downstream consumer requires delivery to survive a process failure between database commit and publication.
+
 ## Advanced Boolean queries
 
 **State:** `deferred`

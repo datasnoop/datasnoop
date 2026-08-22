@@ -31,7 +31,7 @@ Plan a vertical slice that lets an instrumented application send telemetry and l
 
 ## Next item
 
-Start the apply workflow for `investigate-single-service-errors` with task 1.1, confirming the module layout without restoring the intentionally removed `go.mod` bootstrap.
+Start the apply workflow for `investigate-single-service-errors` with task 1.1, confirming the capability-oriented modular-monolith layout, vertical use-case slices and consumer-owned ports without restoring the intentionally removed `go.mod` bootstrap.
 
 ## Iteration log
 
@@ -66,3 +66,21 @@ Start the apply workflow for `investigate-single-service-errors` with task 1.1, 
 
 - Added `README.md` with the product problem, initial investigation journey, architecture principles, scope boundaries, repository map, and development workflow.
 - Marked the project explicitly as planning-stage software with no runnable product yet.
+
+### 2026-08-22 — Architecture pattern consolidation
+
+- Selected a capability-oriented modular monolith with vertical use-case slices and consumer-owned Ports and Adapters.
+- Defined OTLP ingestion as at-least-once, with signal-specific identity and idempotent retransmission of identifiable HTTP operations.
+- Kept historical queries authoritative and live SSE publication best-effort after commit; deferred a durable outbox until a downstream consumer requires guaranteed delivery.
+- Reconciled the ingestion spec, design and implementation tasks with the accepted structural and delivery decisions.
+- Evidence: `openspec status --change investigate-single-service-errors` reports 4/4 artifacts complete, and `openspec validate investigate-single-service-errors --strict` passed.
+- Next unit remains task 1.1 under the refined architecture constraints.
+
+### 2026-08-22 — Test strategy consolidation
+
+- Selected risk-based test levels that map normative scenarios to automated evidence without mirroring package layers.
+- Required real PostgreSQL/TimescaleDB integration, independent OTLP fixtures, deterministic concurrency, race detection and reproducible fuzz seeds at the relevant boundaries.
+- Defined a system workload acceptance test that combines deterministic telemetry producers, a complete deployment and browser sentinel users repeating the investigation journey under load.
+- Split workload validation into versioned profiles with a known semantic oracle and recorded ingest, query, live-delivery and resource evidence.
+- Evidence: `openspec status --change investigate-single-service-errors` reports 4/4 artifacts complete, and `openspec validate investigate-single-service-errors --strict` passed.
+- Next unit remains task 1.1; exact budgets and regression tolerances will be calibrated from the first executable vertical slice.

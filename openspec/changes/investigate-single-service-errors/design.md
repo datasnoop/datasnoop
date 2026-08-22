@@ -11,6 +11,9 @@ The determining constraints are single-node operation on modest hardware, onboar
 - keep a standard OTLP contract at the boundary and an explicit DataSnoop domain internally;
 - close the `problematic endpoint → failing operation → logs → host` journey;
 - make queues, concurrency, payloads, retention, and connections observably bounded;
+- align module boundaries with durable capabilities and vertical investigation use cases;
+- tolerate at-least-once OTLP delivery without inflating endpoint summaries;
+- prove semantic correctness and user-visible investigation behavior under declared system workload profiles;
 - allow an independent OTLP exporter to replace the Go SDK;
 - distinguish platform health from monitored-application health.
 
@@ -19,6 +22,7 @@ The determining constraints are single-node operation on modest hardware, onboar
 - implement the entire OTLP model or promise full visualization of every received field;
 - build distributed tracing, an arbitrary query language, or market-oriented SDKs in this change;
 - make PostgreSQL interchangeable through a generic storage interface;
+- provide exactly-once ingestion, a global event bus, or a durable outbox for the initial Live View;
 - require or bundle an OpenTelemetry Collector;
 - provide high availability or multi-node coordination.
 
@@ -111,6 +115,44 @@ Temporal data uses configurable retention with safe limits. The scheduler record
 
 **Alternative:** Manual retention would reduce scope but contradict predictable VPS operation and prevent the slice from being usable as a product.
 
+### 9. Organize the backend as a capability-oriented modular monolith
+
+The backend is one deployable process whose internal modules follow durable capabilities such as ingestion, investigation, live delivery, host monitoring, and platform operation. Within a capability, user-observable use cases are vertical slices: transport mapping, application behavior, query or persistence port, adapter, and tests stay close to the outcome they deliver. Ingestion remains a coordinated pipeline because its authentication, validation, normalization, admission control, persistence, and response mapping stages do not provide independent value.
+
+Ports and Adapters applies at real I/O and compatibility boundaries. The consuming application behavior owns a narrow port; OTLP/gRPC, PostgreSQL/TimescaleDB, GraphQL, SSE, authentication, and host collection implement adapters. Pure validation and normalization do not receive interfaces merely for structural symmetry. Cross-module reuse is limited to stable telemetry identifiers, time ranges, and explicit application contracts, with package dependency checks preventing access to another capability's internals.
+
+Investigation uses CQRS-lite: write-side normalized temporal facts remain distinct from query-specific read models for endpoint summaries, occurrences, correlated logs, and host context. Query services may use PostgreSQL and TimescaleDB features directly behind consumer-owned ports; no generic repository, command bus, event sourcing system, or dependency-injection framework is introduced.
+
+See ADR 0005 for the structural rationale.
+
+**Alternatives:** Global horizontal layers would scatter a vertical investigation across the repository. A single global hexagon would centralize unrelated ports. Microservices would add distributed failure and coordination before independent deployment is required. Fully isolated slices would duplicate stable telemetry concepts and fragment the ingest pipeline.
+
+### 10. Treat OTLP ingestion as at-least-once and live publication as recoverable best effort
+
+OTLP acknowledgement uncertainty can cause exporters to resend accepted requests. The receiver therefore makes no exactly-once claim. It applies documented identity rules per signal: an HTTP operation is identified by service, environment, trace ID, and span ID, so a retransmission is idempotent and cannot create another occurrence or inflate RED. Records without a reliable identity remain independent instead of being collapsed by a payload hash that could discard legitimate repeated observations.
+
+The batch writer uses a short transaction and reports committed, repeated, rejected, and failed outcomes. Partial success remains a successful OTLP response with rejected counts and is not made retryable; recoverable admission or persistence failures use retryable protocol outcomes. Admission, writer, query, retention, and per-client live resources have separate bounds so one workload cannot consume every connection, worker, or buffer.
+
+Live references are published in memory only after commit. Publication failure or a slow client creates an explicit gap, and the Lounge reconciles from historical queries. A transactional outbox is added only when alerts, webhooks, integrations, or cross-process consumers require durable downstream delivery.
+
+See ADR 0006 for delivery semantics and resumption criteria.
+
+**Alternatives:** Exactly-once cannot be guaranteed at the OTLP boundary. Global payload-hash deduplication can merge legitimate data. A transactional outbox for the initial Live View adds durable messaging lifecycle without a current delivery requirement.
+
+### 11. Validate behavior through a risk-based test strategy and a system workload oracle
+
+Tests follow behavior and risk rather than duplicating the package structure. Normative spec scenarios map to automated contract, integration, system, or acceptance evidence. Unit tests cover deterministic rules; real protocol tests cover OTLP/gRPC, GraphQL and SSE mappings; and persistence tests use the supported PostgreSQL/TimescaleDB version instead of mocks or SQLite. Fixtures that establish receiver compatibility do not import the DataSnoop SDK.
+
+Concurrent correctness uses explicit synchronization, injected clocks and controllable ports rather than arbitrary sleeps. Race detection covers concurrent Go paths, and reproducible fuzz corpora exercise untrusted decoding, limits, identifiers and normalization. Coverage identifies gaps but receives no repository-wide percentage until the executable code establishes a useful baseline.
+
+The top-level workload test deploys the complete single-node system and combines deterministic OTLP producers, protocol-level read traffic and one or a few browser sentinel users. The workload oracle declares expected operations, error impact, retransmissions, correlated logs and host measurements. While telemetry is emitted, the sentinel repeats the historical journey from endpoint overview through occurrence, logs and host context, and observes Live View recovery.
+
+Versioned smoke, steady, burst, saturation, retention, recovery and soak profiles record ingestion outcomes, time to visibility, investigation latency, resource ceilings, queue and connection occupancy, SSE gaps and semantic correctness. Pull requests run fast deterministic suites and a short system smoke profile; scheduled and release pipelines run the expensive profiles. Budgets and regression tolerances are recorded only after measurement on declared hardware.
+
+See ADR 0007 for test-level boundaries and gate rationale.
+
+**Alternatives:** A quantity-based pyramid can pass without proving risky boundaries. Ingest-only load tests miss query starvation and an unusable Lounge. Browser fleets distort the workload with automation overhead. A global coverage threshold does not prove compatibility, controlled degradation or the user journey.
+
 ## Risks / Trade-offs
 
 - **[The supported OTLP subset may surprise exporters]** → publish a support matrix, use partial success, and test official exporters; never drop silently.
@@ -118,6 +160,10 @@ Temporal data uses configurable retention with safe limits. The scheduler record
 - **[PostgreSQL and purge compete with ingestion]** → use batches, hypertables, chunk removal, a configurable window, and concurrent benchmarks.
 - **[The SDK may hide details required for troubleshooting]** → provide opinionated diagnostics and an advanced mode with exporter status without polluting onboarding.
 - **[Live View may diverge from history]** → publish after persistence and signal gaps; history remains authoritative.
+- **[OTLP retries may redeliver accepted records]** → use documented signal-specific identity, make identifiable operations idempotent, and never promise exactly-once delivery.
+- **[One process may erode module boundaries]** → keep ports consumer-owned, restrict cross-capability imports, and verify the dependency direction automatically.
+- **[System tests may become slow or flaky]** → use deterministic datasets and synchronization, pin supported dependencies, keep pull-request profiles short, and move expensive saturation and soak profiles to scheduled gates.
+- **[Performance results vary across environments]** → record the hardware and workload with every result, compare reproducible profiles, and publish measured envelopes instead of universal estimates.
 - **[Host metrics vary across operating systems]** → start with a documented matrix and represent absence without fabricated values.
 - **[A broad vertical change increases coordination]** → establish contracts and fixtures first, use verifiable tasks, and keep the end-to-end demonstration executable throughout the work.
 
