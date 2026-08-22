@@ -10,26 +10,17 @@
 
 <!-- List the checks actually run and their outcomes. -->
 
-- [ ] Unit tests
-- [ ] Component or UI tests
-- [ ] Integration tests
-- [ ] Contract or conformance tests
-- [ ] Resilience or load tests
-- [ ] Not applicable; explain below
-
 ## OpenSpec
 
-- [ ] This change implements an existing OpenSpec task or change.
-- [ ] Planning artifacts were updated when the behavior or design changed.
-- [ ] OpenSpec does not apply; explain below.
+Change: <!-- Name, link, or Not applicable. -->
 
-## Review notes
+## Review focus
 
-<!-- Call out migrations, compatibility changes, operational risks, follow-ups, or areas needing focused review. -->
+<!-- Select every relevant area. Select “No special review focus” only when none apply. -->
 
-## Checklist
-
-- [ ] The branch and commits follow the repository Git workflow.
-- [ ] The relevant CI checks pass.
-- [ ] Documentation and user-facing copy are in English.
-- [ ] No credentials, tokens, or private data are included.
+- [ ] Database schema or migration; rollback impact is explained.
+- [ ] Public contract changed: OTLP, SDK, GraphQL, or SSE.
+- [ ] Authentication, authorization, secret handling, or privacy impact.
+- [ ] Failure, retry, queue, timeout, retention, or performance behavior changed.
+- [ ] User-facing Lounge flow or accessibility behavior changed.
+- [ ] No special review focus.
