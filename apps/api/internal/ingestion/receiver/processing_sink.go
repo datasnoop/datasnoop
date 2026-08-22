@@ -8,6 +8,7 @@ import (
 
 	"github.com/datasnoop/datasnoop/apps/api/internal/ingestion"
 	"github.com/datasnoop/datasnoop/apps/api/internal/ingestion/otlp"
+	"github.com/datasnoop/datasnoop/apps/api/internal/live"
 	"github.com/datasnoop/datasnoop/apps/api/internal/platform/diagnostics"
 	logsv1 "go.opentelemetry.io/proto/otlp/collector/logs/v1"
 	metricsv1 "go.opentelemetry.io/proto/otlp/collector/metrics/v1"
@@ -21,10 +22,17 @@ import (
 type ProcessingSink struct {
 	processor *ingestion.Processor
 	counters  *diagnostics.Counters
+	publisher interface{ Publish(live.Event) }
 }
 
 func NewProcessingSink(processor *ingestion.Processor) *ProcessingSink {
 	return &ProcessingSink{processor: processor, counters: diagnostics.NewCounters()}
+}
+
+func NewProcessingSinkWithPublisher(processor *ingestion.Processor, publisher interface{ Publish(live.Event) }) *ProcessingSink {
+	sink := NewProcessingSink(processor)
+	sink.publisher = publisher
+	return sink
 }
 
 func (sink *ProcessingSink) Snapshot() diagnostics.Snapshot { return sink.counters.Snapshot() }
@@ -80,6 +88,9 @@ func (sink *ProcessingSink) persist(ctx context.Context, result otlp.Result) (ot
 		return result, status.Error(codes.Unavailable, "telemetry persistence is temporarily unavailable")
 	}
 	sink.counters.Accept(uint64(outcome.Committed + outcome.Repeated))
+	if sink.publisher != nil && outcome.Committed > 0 {
+		sink.publisher.Publish(live.Event{Type: "telemetry", Data: map[string]int{"accepted": outcome.Committed}})
+	}
 	return result, nil
 }
 

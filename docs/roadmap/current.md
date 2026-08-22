@@ -252,3 +252,10 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added product-oriented GraphQL endpoint summaries and platform diagnostics, with bounded cursor pagination and a 1 MiB request budget.
 - Evidence: GraphQL contract coverage plus `make integration-test`, `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 6.1, add bounded post-commit live delivery.
+
+### 2026-08-22 — Bounded live delivery
+
+- Added post-persistence best-effort publication through bounded SSE client buffers.
+- Slow clients receive explicit `gap` events; publication never waits for a client and no durable outbox was introduced.
+- Evidence: SSE boundary and race coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 6.2, build the Lounge service overview.
