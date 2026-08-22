@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  commitlint:
+    name: Lint commit messages
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Validate Conventional Commits
+        uses: wagoid/commitlint-github-action@v6
+        with:
+          configFile: commitlint.config.mjs
+
+  verify:
+    name: Verify foundation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: apps/api/go.mod
+          cache-dependency-path: apps/api/go.sum
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/lounge/package-lock.json
+
+      - name: Install OpenSpec
+        run: npm install --global @fission-ai/openspec@1.10.0
+
+      - name: Install Lounge dependencies
+        working-directory: apps/lounge
+        run: npm ci
+
+      - name: Run quality checks
+        run: make quality
+
+      - name: Build applications
+        run: make build
+
+      - name: Verify database migrations
+        run: make migration-verify
+
+      - name: Verify database query plans
+        run: make index-verify
+
+      - name: Verify transactional persistence
+        run: make persistence-verify

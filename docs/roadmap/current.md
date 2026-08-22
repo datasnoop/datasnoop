@@ -31,7 +31,7 @@ Plan a vertical slice that lets an instrumented application send telemetry and l
 
 ## Next item
 
-Start the apply workflow for `investigate-single-service-errors` with task 1.1, confirming the capability-oriented modular-monolith layout, vertical use-case slices and consumer-owned ports without restoring the intentionally removed `go.mod` bootstrap.
+Continue the apply workflow for `investigate-single-service-errors` with task 3.1, implementing authenticated OTLP/gRPC export services and separate liveness and readiness endpoints.
 
 ## Iteration log
 
@@ -84,3 +84,73 @@ Start the apply workflow for `investigate-single-service-errors` with task 1.1, 
 - Split workload validation into versioned profiles with a known semantic oracle and recorded ingest, query, live-delivery and resource evidence.
 - Evidence: `openspec status --change investigate-single-service-errors` reports 4/4 artifacts complete, and `openspec validate investigate-single-service-errors --strict` passed.
 - Next unit remains task 1.1; exact budgets and regression tolerances will be calibrated from the first executable vertical slice.
+
+### 2026-08-22 — Project foundation layout
+
+- Preserved the intentional absence of a root `go.mod`.
+- Added a Go workspace with separate `apps/api` and `sdk/go` modules using the canonical `github.com/datasnoop/datasnoop` import-path prefix.
+- Reserved `apps/lounge` for the frontend without selecting tooling ahead of the quality-command task.
+- Documented the layout and baseline Go commands in `docs/development/layout.md`.
+- Evidence: `go build ./apps/api/... ./sdk/go/...` and `go test ./apps/api/... ./sdk/go/...` succeeded with the expected empty-package warnings.
+- Next unit: change task 1.2, document the supported OTLP contract and map every ingestion scenario to it.
+
+### 2026-08-22 — OTLP ingestion contract
+
+- Defined the supported unary OTLP/gRPC logs, HTTP server spans, and host metric subset in `docs/contracts/otlp-grpc.md`.
+- Documented authentication metadata, transport and record limits, normalization mappings, partial-success behavior, and retryable versus non-retryable failures.
+- Mapped all nine telemetry-ingestion specification scenarios to contract behavior.
+- Evidence: the contract traceability table contains all nine scenarios and the documented signal and partial-success sections are present.
+- Next unit: change task 1.3, create exporter-independent OTLP fixtures.
+
+### 2026-08-22 — Exporter-independent OTLP fixtures
+
+- Added OTLP JSON fixtures for valid traces and metrics, mixed-validity logs, oversized attribute sets, and correlated trace/log records.
+- Added decoder tests that use official OpenTelemetry Protobuf definitions without importing the DataSnoop SDK.
+- Evidence: `go test ./...` in `apps/api` passed.
+- Next unit: change task 1.4, add repeatable quality commands.
+
+### 2026-08-22 — Scaffold quality commands
+
+- Added the Lounge React/TypeScript scaffold with Vitest and Prettier checks.
+- Added root `Makefile` targets for Go tests, frontend tests, formatting checks, strict OpenSpec validation, and builds.
+- Evidence: `make quality` and `make build` passed.
+- Next unit: change task 2.1, define and test the normalized telemetry domain.
+
+### 2026-08-22 — Normalized telemetry domain
+
+- Added API-internal resource, service, host, operation, log, metric, correlation, and source-role types.
+- Added validation limits aligned with the OTLP contract, including identifiers, timestamps, attributes, host identity, and finite measurements.
+- Evidence: `go test ./...` in `apps/api` passed, covering valid correlation, invalid timestamps and identifiers, invalid attributes, source roles, and host requirements.
+- Next unit: change task 2.2, create database migrations with rollback verification.
+
+### 2026-08-22 — Temporal persistence migrations
+
+- Added idempotent TimescaleDB migrations for service, host, resource, operation, log, and metric storage.
+- Added a disposable containerized migration verifier that applies the migration twice and rolls it back before any retention behavior exists.
+- Evidence: `make migration-verify` passed against `timescale/timescaledb:2.29.1-pg17`.
+- Next unit: change task 2.3, add indexes and verify representative query plans.
+
+### 2026-08-22 — Investigation indexes
+
+- Added indexes for service/time, route/status/time, trace/span correlation, and resource/time metric filters.
+- Added a seeded TimescaleDB query-plan verifier for endpoint, correlated-log, and host-metric queries.
+- Evidence: `make index-verify` passed, with each representative plan using its intended chunk index.
+- Next unit: change task 2.4, implement transactional batched persistence.
+
+### 2026-08-22 — Transactional batch persistence
+
+- Added transactional persistence for normalized operations, logs, and metrics with explicit committed, rejected, and failed outcomes.
+- Added an isolated database integration verifier that checks mixed valid/invalid batches and a persistence failure rollback.
+- Evidence: `make persistence-verify` passed against the disposable TimescaleDB container.
+- Next unit: change task 3.1, expose authenticated OTLP/gRPC and health endpoints.
+
+### 2026-08-22 — Persistence foundation reconciliation
+
+- Merged the existing repository, Lounge, contract, fixture, normalized-domain, migration, index, and transactional-persistence foundation onto the current architecture and testability baseline.
+- Reorganized backend code into stable telemetry concepts, the ingestion capability with a consumer-owned batch-store port, and a PostgreSQL/TimescaleDB adapter; added an automated capability dependency check.
+- Documented at-least-once delivery and signal-specific duplicate behavior, added an exporter-independent retransmission fixture, and preserved independent acceptance for logs and measurements without reliable identity.
+- Added a regular operation identity table keyed by service/environment identity, trace ID, and span ID so TimescaleDB hypertable partitioning does not weaken semantic idempotency.
+- Extended persistence outcomes with `repeated` and verified that retransmitting an HTTP operation retains one operation while reporting the second delivery explicitly.
+- Added explicit unit, contract, integration, race, fuzz-seed, frontend, system-smoke, formatting, architecture, and OpenSpec commands. Race execution reports its missing local C-compiler prerequisite; CI runs it on the supported Ubuntu runner. Fuzz and system commands report their expected pre-implementation state.
+- Evidence: `make quality`, `make build`, `make integration-test`, and `openspec validate investigate-single-service-errors --strict` passed, with the documented local race prerequisite result.
+- Next unit: task 3.1, authenticated OTLP/gRPC export services and independent health endpoints.

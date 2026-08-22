@@ -1,0 +1,45 @@
+{
+  "resourceSpans": [
+    {
+      "resource": {
+        "attributes": [
+          {"key": "service.name", "value": {"stringValue": "checkout"}},
+          {"key": "deployment.environment.name", "value": {"stringValue": "production"}}
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {"name": "independent-fixture-exporter"},
+          "spans": [
+            {
+              "traceId": "102132435465768798a9babcbddcedfe",
+              "spanId": "1021324354657687",
+              "kind": "SPAN_KIND_SERVER",
+              "name": "POST /orders",
+              "startTimeUnixNano": "1724356800000000000",
+              "endTimeUnixNano": "1724356800100000000",
+              "attributes": [
+                {"key": "http.request.method", "value": {"stringValue": "POST"}},
+                {"key": "http.route", "value": {"stringValue": "/orders"}},
+                {"key": "http.response.status_code", "value": {"intValue": "500"}}
+              ]
+            },
+            {
+              "traceId": "102132435465768798a9babcbddcedfe",
+              "spanId": "1021324354657687",
+              "kind": "SPAN_KIND_SERVER",
+              "name": "POST /orders",
+              "startTimeUnixNano": "1724356800000000000",
+              "endTimeUnixNano": "1724356800100000000",
+              "attributes": [
+                {"key": "http.request.method", "value": {"stringValue": "POST"}},
+                {"key": "http.route", "value": {"stringValue": "/orders"}},
+                {"key": "http.response.status_code", "value": {"intValue": "500"}}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

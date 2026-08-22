@@ -1,0 +1,14 @@
+services:
+  database:
+    image: timescale/timescaledb:2.29.1-pg17
+    environment:
+      POSTGRES_DB: datasnoop_test
+      POSTGRES_USER: datasnoop
+      POSTGRES_PASSWORD: datasnoop
+    ports:
+      - "54329:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U datasnoop -d datasnoop_test"]
+      interval: 2s
+      timeout: 2s
+      retries: 20

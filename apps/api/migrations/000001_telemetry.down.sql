@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS metrics;
+DROP TABLE IF EXISTS logs;
+DROP TABLE IF EXISTS operations;
+DROP TABLE IF EXISTS operation_identities;
+DROP TABLE IF EXISTS resources;
+DROP TABLE IF EXISTS hosts;
+DROP TABLE IF EXISTS services;

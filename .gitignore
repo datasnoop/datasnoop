@@ -1,0 +1,4 @@
+apps/lounge/node_modules/
+apps/lounge/dist/
+apps/lounge/coverage/
+apps/lounge/*.tsbuildinfo

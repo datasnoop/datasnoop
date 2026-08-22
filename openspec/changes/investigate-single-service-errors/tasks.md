@@ -1,16 +1,28 @@
+## Cross-cutting test directive
+
+Each task SHALL add and execute the smallest test layer that proves its changed
+behavior. A task that crosses a process, network, database, migration, gRPC,
+GraphQL, or SSE boundary SHALL include an integration test. A task that changes
+a public OTLP contract SHALL include contract or conformance coverage. A task
+that changes failure, timeout, queue, retry, overload, or slow-client behavior
+SHALL include resilience coverage. User-facing Lounge behavior SHALL include
+component or end-to-end coverage. Load and retention-concurrency profiles remain
+in task 8.4 unless an earlier task explicitly changes a declared operational
+limit.
+
 ## 1. Contracts and project foundation
 
-- [ ] 1.1 Establish the approved Go module/workspace and frontend layout as a capability-oriented modular monolith with vertical use-case slices and consumer-owned ports, without overwriting the pre-existing `go.mod` deletion, and verify the baseline build plus an architecture dependency check run or report only expected empty-project results
-- [ ] 1.2 Document the supported OTLP logs, traces and metrics subset, semantic mappings, authentication metadata, payload limits, partial-success policy and signal-specific duplicate identity rules, and verify every ingestion spec scenario maps to a documented contract case
-- [ ] 1.3 Create language-independent OTLP fixtures for valid, mixed-validity, oversized, correlated and retransmitted telemetry, and verify they decode using official OpenTelemetry Protobuf definitions without importing the DataSnoop SDK
-- [ ] 1.4 Add automated commands for unit, contract, PostgreSQL/TimescaleDB integration, race, fuzz-seed, frontend, system-smoke, formatting, capability dependency and OpenSpec checks, and verify a clean scaffold runs each applicable suite or reports only its expected empty-project result
+- [x] 1.1 Establish the approved Go module/workspace and frontend layout as a capability-oriented modular monolith with vertical use-case slices and consumer-owned ports, without overwriting the pre-existing `go.mod` deletion, and verify the baseline build plus an architecture dependency check run or report only expected empty-project results
+- [x] 1.2 Document the supported OTLP logs, traces and metrics subset, semantic mappings, authentication metadata, payload limits, partial-success policy and signal-specific duplicate identity rules, and verify every ingestion spec scenario maps to a documented contract case
+- [x] 1.3 Create language-independent OTLP fixtures for valid, mixed-validity, oversized, correlated and retransmitted telemetry, and verify they decode using official OpenTelemetry Protobuf definitions without importing the DataSnoop SDK
+- [x] 1.4 Add automated commands for unit, contract, PostgreSQL/TimescaleDB integration, race, fuzz-seed, frontend, system-smoke, formatting, capability dependency and OpenSpec checks, and verify a clean scaffold runs each applicable suite or reports only its expected empty-project result
 
 ## 2. Persistence and normalized domain
 
-- [ ] 2.1 Implement normalized resource, service, host, operation, log and metric domain types with explicit validation limits, and verify unit tests cover correlation identifiers, timestamps, source roles and invalid attributes
-- [ ] 2.2 Add versioned PostgreSQL/TimescaleDB migrations for identities, signal-specific idempotency constraints and temporal signal tables, and verify against the supported real database version that migrations apply idempotently to a clean database and roll back before destructive retention occurs
-- [ ] 2.3 Add indexes for service/time, normalized route/status, trace/span correlation and host/time filters, and verify representative machine-readable query plans use the intended indexes on a deterministic dataset in the supported real database version
-- [ ] 2.4 Implement short transactional batched persistence with signal-specific idempotency and committed, repeated, rejected and failed outcome reporting, and verify integration tests cover both first delivery and retransmission
+- [x] 2.1 Implement normalized resource, service, host, operation, log and metric domain types with explicit validation limits, and verify unit tests cover correlation identifiers, timestamps, source roles and invalid attributes
+- [x] 2.2 Add versioned PostgreSQL/TimescaleDB migrations for identities, signal-specific idempotency constraints and temporal signal tables, and verify against the supported real database version that migrations apply idempotently to a clean database and roll back before destructive retention occurs
+- [x] 2.3 Add indexes for service/time, normalized route/status, trace/span correlation and host/time filters, and verify representative machine-readable query plans use the intended indexes on a deterministic dataset in the supported real database version
+- [x] 2.4 Implement short transactional batched persistence with signal-specific idempotency and committed, repeated, rejected and failed outcome reporting, and verify integration tests cover both first delivery and retransmission
 
 ## 3. OTLP ingestion and backpressure
 
