@@ -246,3 +246,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added time-aligned monitored-host context with explicit `available`, `stale`, and `missing` states, without causal claims or fabricated healthy measurements.
 - Evidence: `make integration-test` passed with real TimescaleDB coverage for both behaviors.
 - Next unit: task 5.5, expose historical queries through GraphQL.
+
+### 2026-08-22 — GraphQL investigation boundary
+
+- Added product-oriented GraphQL endpoint summaries and platform diagnostics, with bounded cursor pagination and a 1 MiB request budget.
+- Evidence: GraphQL contract coverage plus `make integration-test`, `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 6.1, add bounded post-commit live delivery.

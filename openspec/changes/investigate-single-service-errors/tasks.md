@@ -46,7 +46,7 @@ limit.
 - [x] 5.2 Implement error-occurrence retrieval with service, time, route and status filters, and verify results cannot cross service or environment boundaries
 - [x] 5.3 Implement trace/span-based correlated log retrieval with severity filtering, and verify correlated and merely time-adjacent logs remain distinguishable
 - [x] 5.4 Implement time-aligned host context retrieval with stale and missing-data classification, and verify the query never infers causation or substitutes a healthy default
-- [ ] 5.5 Expose historical investigation and platform diagnostics as capability-local vertical query slices through the GraphQL boundary, and verify GraphQL contract tests plus real-database integration tests use product terminology while retaining stable pagination, response budgets and error behavior
+- [x] 5.5 Expose historical investigation and platform diagnostics as capability-local vertical query slices through the GraphQL boundary, and verify GraphQL contract tests plus real-database integration tests use product terminology while retaining stable pagination, response budgets and error behavior
 
 ## 6. Live delivery and Lounge
 
