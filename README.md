@@ -5,7 +5,7 @@ DataSnoop is an open-source, self-hosted observability platform designed for ind
 It aims to shorten the path from noticing a production incident to finding its likely cause without requiring users to assemble a fragmented monitoring stack, write a query language, or understand OpenTelemetry internals.
 
 > [!IMPORTANT]
-> DataSnoop is currently in the planning and architecture stage. The repository contains validated product specifications and an implementation plan, but no runnable product yet.
+> DataSnoop is in early implementation. The repository contains validated product specifications, a runnable application scaffold, and a verified persistence foundation, but not yet a complete investigation product.
 
 ## The first investigation journey
 
@@ -91,14 +91,18 @@ These are tracked as opportunities with explicit dependencies and resumption tri
 ```text
 .
 ├── AGENTS.md                  Agent workflow and repository rules
+├── apps/
+│   ├── api/                  Capability-oriented Go modular monolith
+│   └── lounge/               React and TypeScript frontend
 ├── docs/
 │   ├── product/              Vision, principles, capabilities, and glossary
 │   ├── decisions/            Architectural decision records
 │   └── roadmap/              Current state and deferred opportunities
-└── openspec/
+├── openspec/
     ├── config.yaml           OpenSpec context and artifact rules
     ├── specs/                Archived durable behavior specifications
-    └── changes/              Active change proposals and implementation plans
+│   └── changes/              Active change proposals and implementation plans
+└── sdk/go/                   Reference and dogfooding Go SDK
 ```
 
 Start with these documents:
@@ -132,6 +136,9 @@ openspec validate investigate-single-service-errors --strict
 
 All repository content and source code must be written in English. Agent-user interaction may use the user's preferred language.
 
+See the [Git workflow](docs/development/git-workflow.md) for branch naming,
+Conventional Commits, pull-request expectations, and the mainline policy.
+
 ## Project status
 
-The first OpenSpec change, [`investigate-single-service-errors`](openspec/changes/investigate-single-service-errors/), has complete and strictly validated planning artifacts. Implementation has not started.
+The first OpenSpec change, [`investigate-single-service-errors`](openspec/changes/investigate-single-service-errors/), has complete and strictly validated planning artifacts. Contracts, independent OTLP fixtures, the modular-monolith scaffold, normalized telemetry types, and transactional TimescaleDB persistence are implemented and verified. The authenticated OTLP receiver is the next increment.

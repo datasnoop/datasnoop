@@ -1,0 +1,24 @@
+{
+  "resourceLogs": [
+    {
+      "resource": {
+        "attributes": [
+          {"key":"a01","value":{"stringValue":"x"}},{"key":"a02","value":{"stringValue":"x"}},{"key":"a03","value":{"stringValue":"x"}},{"key":"a04","value":{"stringValue":"x"}},{"key":"a05","value":{"stringValue":"x"}},
+          {"key":"a06","value":{"stringValue":"x"}},{"key":"a07","value":{"stringValue":"x"}},{"key":"a08","value":{"stringValue":"x"}},{"key":"a09","value":{"stringValue":"x"}},{"key":"a10","value":{"stringValue":"x"}},
+          {"key":"a11","value":{"stringValue":"x"}},{"key":"a12","value":{"stringValue":"x"}},{"key":"a13","value":{"stringValue":"x"}},{"key":"a14","value":{"stringValue":"x"}},{"key":"a15","value":{"stringValue":"x"}},
+          {"key":"a16","value":{"stringValue":"x"}},{"key":"a17","value":{"stringValue":"x"}},{"key":"a18","value":{"stringValue":"x"}},{"key":"a19","value":{"stringValue":"x"}},{"key":"a20","value":{"stringValue":"x"}},
+          {"key":"a21","value":{"stringValue":"x"}},{"key":"a22","value":{"stringValue":"x"}},{"key":"a23","value":{"stringValue":"x"}},{"key":"a24","value":{"stringValue":"x"}},{"key":"a25","value":{"stringValue":"x"}},
+          {"key":"a26","value":{"stringValue":"x"}},{"key":"a27","value":{"stringValue":"x"}},{"key":"a28","value":{"stringValue":"x"}},{"key":"a29","value":{"stringValue":"x"}},{"key":"a30","value":{"stringValue":"x"}},
+          {"key":"a31","value":{"stringValue":"x"}},{"key":"a32","value":{"stringValue":"x"}},{"key":"a33","value":{"stringValue":"x"}},{"key":"a34","value":{"stringValue":"x"}},{"key":"a35","value":{"stringValue":"x"}},
+          {"key":"a36","value":{"stringValue":"x"}},{"key":"a37","value":{"stringValue":"x"}},{"key":"a38","value":{"stringValue":"x"}},{"key":"a39","value":{"stringValue":"x"}},{"key":"a40","value":{"stringValue":"x"}},
+          {"key":"a41","value":{"stringValue":"x"}},{"key":"a42","value":{"stringValue":"x"}},{"key":"a43","value":{"stringValue":"x"}},{"key":"a44","value":{"stringValue":"x"}},{"key":"a45","value":{"stringValue":"x"}},
+          {"key":"a46","value":{"stringValue":"x"}},{"key":"a47","value":{"stringValue":"x"}},{"key":"a48","value":{"stringValue":"x"}},{"key":"a49","value":{"stringValue":"x"}},{"key":"a50","value":{"stringValue":"x"}},
+          {"key":"a51","value":{"stringValue":"x"}},{"key":"a52","value":{"stringValue":"x"}},{"key":"a53","value":{"stringValue":"x"}},{"key":"a54","value":{"stringValue":"x"}},{"key":"a55","value":{"stringValue":"x"}},
+          {"key":"a56","value":{"stringValue":"x"}},{"key":"a57","value":{"stringValue":"x"}},{"key":"a58","value":{"stringValue":"x"}},{"key":"a59","value":{"stringValue":"x"}},{"key":"a60","value":{"stringValue":"x"}},
+          {"key":"a61","value":{"stringValue":"x"}},{"key":"a62","value":{"stringValue":"x"}},{"key":"a63","value":{"stringValue":"x"}},{"key":"a64","value":{"stringValue":"x"}},{"key":"a65","value":{"stringValue":"x"}}
+        ]
+      },
+      "scopeLogs": [{"scope":{"name":"independent-fixture-exporter"},"logRecords":[{"timeUnixNano":"1724356800000000000","body":{"stringValue":"too many attributes"}}]}]
+    }
+  ]
+}

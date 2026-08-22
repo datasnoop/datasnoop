@@ -1,0 +1,62 @@
+name: Bug report
+description: Report behavior that differs from the documented or expected outcome.
+title: "fix: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a problem. Please remove secrets, tokens, and private telemetry before submitting.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Explain the observed behavior and the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Provide the smallest reliable sequence of steps, configuration, and sample input.
+      placeholder: |
+        1. Start DataSnoop with ...
+        2. Send ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Add sanitized logs, errors, screenshots, traces, or a minimal repository when available.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Telemetry ingestion
+        - Go SDK
+        - Investigation API
+        - Lounge
+        - Host monitoring
+        - Platform operations
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: DataSnoop version or commit
+      placeholder: "v0.0.0 or abc1234"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include OS, architecture, deployment method, and relevant dependency versions.
+    validations:
+      required: true
