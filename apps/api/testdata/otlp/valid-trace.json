@@ -1,0 +1,33 @@
+{
+  "resourceSpans": [
+    {
+      "resource": {
+        "attributes": [
+          {"key": "service.name", "value": {"stringValue": "checkout"}},
+          {"key": "deployment.environment.name", "value": {"stringValue": "production"}},
+          {"key": "host.id", "value": {"stringValue": "host-checkout-01"}}
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {"name": "independent-fixture-exporter"},
+          "spans": [
+            {
+              "traceId": "00112233445566778899aabbccddeeff",
+              "spanId": "0011223344556677",
+              "kind": "SPAN_KIND_SERVER",
+              "name": "GET /orders/:orderID",
+              "startTimeUnixNano": "1724356800000000000",
+              "endTimeUnixNano": "1724356800030000000",
+              "attributes": [
+                {"key": "http.request.method", "value": {"stringValue": "GET"}},
+                {"key": "http.route", "value": {"stringValue": "/orders/:orderID"}},
+                {"key": "http.response.status_code", "value": {"intValue": "200"}}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

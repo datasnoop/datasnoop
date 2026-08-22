@@ -134,4 +134,4 @@ All repository content and source code must be written in English. Agent-user in
 
 ## Project status
 
-The first OpenSpec change, [`investigate-single-service-errors`](openspec/changes/investigate-single-service-errors/), has complete and strictly validated planning artifacts. Implementation has not started.
+The first OpenSpec change, [`investigate-single-service-errors`](openspec/changes/investigate-single-service-errors/), has complete and strictly validated planning artifacts. Its project-layout foundation is in place, but no runnable product exists yet.

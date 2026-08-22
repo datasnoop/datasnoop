@@ -1,16 +1,16 @@
 ## 1. Contracts and project foundation
 
-- [ ] 1.1 Establish the approved Go module/workspace and frontend layout without overwriting the pre-existing `go.mod` deletion, and verify the repository's baseline build and test commands run or report only expected empty-project results
-- [ ] 1.2 Document the supported OTLP logs, traces and metrics subset, semantic mappings, authentication metadata, payload limits and partial-success policy, and verify every ingestion spec scenario maps to a documented contract case
-- [ ] 1.3 Create language-independent OTLP fixtures for valid, mixed-validity, oversized and correlated telemetry, and verify they decode using official OpenTelemetry Protobuf definitions without importing the DataSnoop SDK
-- [ ] 1.4 Add automated quality commands for Go tests, frontend tests, formatting and OpenSpec validation, and verify a clean scaffold passes all configured checks
+- [x] 1.1 Establish the approved Go module/workspace and frontend layout without overwriting the pre-existing `go.mod` deletion, and verify the repository's baseline build and test commands run or report only expected empty-project results
+- [x] 1.2 Document the supported OTLP logs, traces and metrics subset, semantic mappings, authentication metadata, payload limits and partial-success policy, and verify every ingestion spec scenario maps to a documented contract case
+- [x] 1.3 Create language-independent OTLP fixtures for valid, mixed-validity, oversized and correlated telemetry, and verify they decode using official OpenTelemetry Protobuf definitions without importing the DataSnoop SDK
+- [x] 1.4 Add automated quality commands for Go tests, frontend tests, formatting and OpenSpec validation, and verify a clean scaffold passes all configured checks
 
 ## 2. Persistence and normalized domain
 
-- [ ] 2.1 Implement normalized resource, service, host, operation, log and metric domain types with explicit validation limits, and verify unit tests cover correlation identifiers, timestamps, source roles and invalid attributes
-- [ ] 2.2 Add versioned PostgreSQL/TimescaleDB migrations for identities and temporal signal tables, and verify migrations apply idempotently to a clean database and roll back before destructive retention occurs
-- [ ] 2.3 Add indexes for service/time, normalized route/status, trace/span correlation and host/time filters, and verify representative query plans use the intended indexes on seeded data
-- [ ] 2.4 Implement batched persistence for normalized records with transactional outcome reporting, and verify integration tests distinguish committed, rejected and failed batches
+- [x] 2.1 Implement normalized resource, service, host, operation, log and metric domain types with explicit validation limits, and verify unit tests cover correlation identifiers, timestamps, source roles and invalid attributes
+- [x] 2.2 Add versioned PostgreSQL/TimescaleDB migrations for identities and temporal signal tables, and verify migrations apply idempotently to a clean database and roll back before destructive retention occurs
+- [x] 2.3 Add indexes for service/time, normalized route/status, trace/span correlation and host/time filters, and verify representative query plans use the intended indexes on seeded data
+- [x] 2.4 Implement batched persistence for normalized records with transactional outcome reporting, and verify integration tests distinguish committed, rejected and failed batches
 
 ## 3. OTLP ingestion and backpressure
 

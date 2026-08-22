@@ -1,0 +1,21 @@
+{
+  "resourceLogs": [
+    {
+      "resource": {"attributes": [{"key": "service.name", "value": {"stringValue": "checkout"}}]},
+      "scopeLogs": [
+        {
+          "scope": {"name": "independent-fixture-exporter"},
+          "logRecords": [
+            {
+              "timeUnixNano": "1724356800050000000",
+              "severityText": "ERROR",
+              "traceId": "102132435465768798a9babcbddcedfe",
+              "spanId": "1021324354657687",
+              "body": {"stringValue": "order creation failed"}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

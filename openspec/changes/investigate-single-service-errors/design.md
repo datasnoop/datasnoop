@@ -111,6 +111,24 @@ Temporal data uses configurable retention with safe limits. The scheduler record
 
 **Alternative:** Manual retention would reduce scope but contradict predictable VPS operation and prevent the slice from being usable as a product.
 
+### 9. Build the Lounge with custom visual primitives and scoped CSS
+
+The Lounge uses React and TypeScript with CSS Modules and CSS custom properties
+for design tokens. Product components remain custom so the visual identity can
+support DataSnoop's distinctive style while keeping critical investigation and
+operational states clear.
+
+Accessible low-level primitives such as dialogs, menus, selects, and tooltips
+may use Radix UI when a current interaction requires them. The Lounge does not
+adopt Tailwind CSS or a complete visual component suite in this change. This
+avoids distributing visual decisions across utility markup or inheriting a
+generic dashboard appearance before the product design language is established.
+
+**Alternatives:** Tailwind CSS would accelerate utility-first composition but
+would couple visual decisions more tightly to component markup. A complete UI
+suite would provide ready-made components but would constrain the product's
+visual identity and add components beyond the current investigation journey.
+
 ## Risks / Trade-offs
 
 - **[The supported OTLP subset may surprise exporters]** → publish a support matrix, use partial success, and test official exporters; never drop silently.

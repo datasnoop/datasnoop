@@ -1,0 +1,27 @@
+{
+  "resourceLogs": [
+    {
+      "resource": {
+        "attributes": [
+          {"key": "service.name", "value": {"stringValue": "checkout"}}
+        ]
+      },
+      "scopeLogs": [
+        {
+          "scope": {"name": "independent-fixture-exporter"},
+          "logRecords": [
+            {
+              "timeUnixNano": "1724356800000000000",
+              "severityText": "ERROR",
+              "body": {"stringValue": "payment provider failed"}
+            },
+            {
+              "severityText": "ERROR",
+              "body": {"stringValue": "missing timestamp is intentionally invalid"}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

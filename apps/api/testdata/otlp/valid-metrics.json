@@ -1,0 +1,25 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {"key": "service.name", "value": {"stringValue": "checkout"}},
+          {"key": "host.id", "value": {"stringValue": "host-checkout-01"}},
+          {"key": "datasnoop.source.role", "value": {"stringValue": "monitored-service"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {"name": "independent-fixture-exporter"},
+          "metrics": [
+            {
+              "name": "system.cpu.utilization",
+              "unit": "1",
+              "gauge": {"dataPoints": [{"asDouble": 0.42, "timeUnixNano": "1724356800000000000"}]}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
