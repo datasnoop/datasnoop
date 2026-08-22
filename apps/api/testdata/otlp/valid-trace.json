@@ -13,8 +13,8 @@
           "scope": {"name": "independent-fixture-exporter"},
           "spans": [
             {
-              "traceId": "00112233445566778899aabbccddeeff",
-              "spanId": "0011223344556677",
+              "traceId": "ABEiM0RVZneImaq7zN3u/w==",
+              "spanId": "ABEiM0RVZnc=",
               "kind": "SPAN_KIND_SERVER",
               "name": "GET /orders/:orderID",
               "startTimeUnixNano": "1724356800000000000",

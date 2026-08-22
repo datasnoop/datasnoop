@@ -9,8 +9,8 @@
             {
               "timeUnixNano": "1724356800050000000",
               "severityText": "ERROR",
-              "traceId": "102132435465768798a9babcbddcedfe",
-              "spanId": "1021324354657687",
+              "traceId": "ECEyQ1RldoeYqbq8vdzt/g==",
+              "spanId": "ECEyQ1Rldoc=",
               "body": {"stringValue": "order creation failed"}
             }
           ]

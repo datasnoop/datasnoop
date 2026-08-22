@@ -26,24 +26,24 @@ limit.
 
 ## 3. OTLP ingestion and backpressure
 
-- [ ] 3.1 Implement authenticated standard OTLP/gRPC export services for logs, traces and metrics plus separate liveness/readiness endpoints, and verify valid metadata succeeds while missing or invalid credentials persist nothing
-- [ ] 3.2 Implement record-level validation and normalization for the supported signal subset, and verify independent OTLP/gRPC contract fixtures plus reproducible fuzz seeds preserve resource, service, host, timestamp, severity and correlation semantics without panics or unbounded allocation
-- [ ] 3.3 Implement separately bounded admission, queueing, batch writing and persistence timeouts, and verify deterministic saturation plus race-enabled tests return retryable outcomes without consuming query, retention or live-delivery resource budgets
-- [ ] 3.4 Implement OTLP partial-success responses for mixed batches, explicit failures for wholly invalid batches and retryable mappings only for recoverable failures, and verify counts, reason categories and client retry expectations match the fixtures
-- [ ] 3.5 Expose bounded accepted, rejected, throttled and dropped operational metrics with restart identity, and verify diagnostics distinguish counter reset from a historical decrease
+- [x] 3.1 Implement authenticated standard OTLP/gRPC export services for logs, traces and metrics plus separate liveness/readiness endpoints, and verify valid metadata succeeds while missing or invalid credentials persist nothing
+- [x] 3.2 Implement record-level validation and normalization for the supported signal subset, and verify independent OTLP/gRPC contract fixtures plus reproducible fuzz seeds preserve resource, service, host, timestamp, severity and correlation semantics without panics or unbounded allocation
+- [x] 3.3 Implement separately bounded admission, queueing, batch writing and persistence timeouts, and verify deterministic saturation plus race-enabled tests return retryable outcomes without consuming query, retention or live-delivery resource budgets
+- [x] 3.4 Implement OTLP partial-success responses for mixed batches, explicit failures for wholly invalid batches and retryable mappings only for recoverable failures, and verify counts, reason categories and client retry expectations match the fixtures
+- [x] 3.5 Expose bounded accepted, rejected, throttled and dropped operational metrics with restart identity, and verify diagnostics distinguish counter reset from a historical decrease
 
 ## 4. Go reference instrumentation
 
-- [ ] 4.1 Implement the opinionated Go SDK bootstrap over official OpenTelemetry providers and OTLP exporter configuration, and verify minimum valid configuration becomes ready while malformed configuration returns actionable errors
-- [ ] 4.2 Add `net/http` server instrumentation with normalized route, status, duration and correlation propagation, and verify tests cover success, server error and high-cardinality raw paths
-- [ ] 4.3 Add an idiomatic `slog` integration that preserves records and attaches active correlation context, and verify request and background logging scenarios export the expected identifiers
-- [ ] 4.4 Add application-host CPU, memory and disk collection with stable host identity and `monitored-service` source role, and verify unsupported or unavailable measurements are omitted rather than fabricated
-- [ ] 4.5 Implement bounded SDK buffering, retry, discard counters and deadline-aware shutdown, and verify backend outage and queue saturation never block request handling indefinitely
+- [x] 4.1 Implement the opinionated Go SDK bootstrap over official OpenTelemetry providers and OTLP exporter configuration, and verify minimum valid configuration becomes ready while malformed configuration returns actionable errors
+- [x] 4.2 Add `net/http` server instrumentation with normalized route, status, duration and correlation propagation, and verify tests cover success, server error and high-cardinality raw paths
+- [x] 4.3 Add an idiomatic `slog` integration that preserves records and attaches active correlation context, and verify request and background logging scenarios export the expected identifiers
+- [x] 4.4 Add application-host CPU, memory and disk collection with stable host identity and `monitored-service` source role, and verify unsupported or unavailable measurements are omitted rather than fabricated
+- [x] 4.5 Implement bounded SDK buffering, retry, discard counters and deadline-aware shutdown, and verify backend outage and queue saturation never block request handling indefinitely
 
 ## 5. Investigation query services
 
-- [ ] 5.1 Implement time-windowed endpoint aggregation from persisted HTTP operations, and verify seeded queries return rate, error impact and duration summaries grouped by normalized route without inflation after operation retransmission
-- [ ] 5.2 Implement error-occurrence retrieval with service, time, route and status filters, and verify results cannot cross service or environment boundaries
+- [x] 5.1 Implement time-windowed endpoint aggregation from persisted HTTP operations, and verify seeded queries return rate, error impact and duration summaries grouped by normalized route without inflation after operation retransmission
+- [x] 5.2 Implement error-occurrence retrieval with service, time, route and status filters, and verify results cannot cross service or environment boundaries
 - [ ] 5.3 Implement trace/span-based correlated log retrieval with severity filtering, and verify correlated and merely time-adjacent logs remain distinguishable
 - [ ] 5.4 Implement time-aligned host context retrieval with stale and missing-data classification, and verify the query never infers causation or substitutes a healthy default
 - [ ] 5.5 Expose historical investigation and platform diagnostics as capability-local vertical query slices through the GraphQL boundary, and verify GraphQL contract tests plus real-database integration tests use product terminology while retaining stable pagination, response budgets and error behavior

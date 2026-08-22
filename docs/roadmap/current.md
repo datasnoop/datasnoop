@@ -154,3 +154,88 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added explicit unit, contract, integration, race, fuzz-seed, frontend, system-smoke, formatting, architecture, and OpenSpec commands. Race execution reports its missing local C-compiler prerequisite; CI runs it on the supported Ubuntu runner. Fuzz and system commands report their expected pre-implementation state.
 - Evidence: `make quality`, `make build`, `make integration-test`, and `openspec validate investigate-single-service-errors --strict` passed, with the documented local race prerequisite result.
 - Next unit: task 3.1, authenticated OTLP/gRPC export services and independent health endpoints.
+
+### 2026-08-22 — Authenticated OTLP receiver boundary
+
+- Added standard OTLP/gRPC logs, traces, and metrics export services guarded by exactly one `x-datasnoop-token` metadata value.
+- Added separate `GET /health/live` and `GET /health/ready` endpoints; liveness reports process vitality while readiness reports dependency state.
+- Kept the raw authenticated request sink isolated so task 3.2 can add record normalization without widening the transport contract.
+- Evidence: `go test ./...` in `apps/api` passed, including real gRPC boundary coverage that valid metadata reaches all three services and missing or invalid metadata never reaches the sink.
+- Next unit: task 3.2, normalize and validate the supported OTLP records.
+
+### 2026-08-22 — OTLP record normalization
+
+- Added record-granular normalization of supported OTLP server spans, log records, and monitored-service host gauges into the normalized telemetry domain.
+- Preserved service, environment, host, source timestamps, severity, and trace/span correlation; unsupported or invalid records receive contract reason categories.
+- Corrected the independent OTLP fixtures to use Protobuf JSON's base64 representation for byte identifiers, making their trace and span IDs valid at the protocol boundary.
+- Evidence: `go test ./...` and `go test -run=^$ -fuzz=FuzzNormalizeLogs -fuzztime=2s ./internal/ingestion/otlp` passed in `apps/api`.
+- Next unit: task 3.3, bound admission, queueing, batch writing, and persistence timeouts.
+
+### 2026-08-22 — Bounded ingestion processing
+
+- Added independent admission and queue limits, worker execution, and a per-write persistence deadline around the consumer-owned batch store.
+- Made the bounded ingest queue observable without sharing its resource budget with future query, retention, or live-delivery work.
+- Evidence: `go test ./internal/ingestion -race` passed in `apps/api`, covering deterministic admission/queue saturation and persistence timeout behavior.
+- Next unit: task 3.4, map normalized outcomes to OTLP partial-success and retryable responses.
+
+### 2026-08-22 — OTLP outcomes and retry mapping
+
+- Connected normalized records to the bounded processor and mapped record rejections to OTLP partial-success fields for logs, traces, and metrics.
+- Authenticated wholly invalid requests now return `InvalidArgument`; recoverable admission, queue, timeout, and persistence failures return `Unavailable` without partial-success masking.
+- Evidence: `go test ./internal/ingestion/receiver -race` and `go test ./...` passed in `apps/api`, including mixed-validity and wholly-invalid OTLP/gRPC fixture coverage.
+- Next unit: task 3.5, expose bounded ingestion operational metrics and restart identity.
+
+### 2026-08-22 — Ingestion operational diagnostics
+
+- Added restart-scoped atomic counters for accepted, rejected, throttled, and dropped telemetry outcomes.
+- Attached the counters to the processing sink so partial rejections and capacity throttling are observable alongside a stable restart identity.
+- Evidence: `go test ./...` passed in `apps/api` (29 tests); `openspec validate investigate-single-service-errors --strict` passed.
+- Next unit: task 4.1, implement the Go reference SDK bootstrap.
+
+### 2026-08-22 — Go SDK bootstrap
+
+- Added the reference SDK's one-call bootstrap with service name, endpoint, and credential configuration.
+- Bootstrap configures the official OpenTelemetry OTLP/gRPC trace exporter and resource provider while attaching the DataSnoop authentication metadata; malformed configuration returns user-actionable errors.
+- Evidence: `go test ./...` passed in `sdk/go`.
+- Next unit: task 4.2, add `net/http` server instrumentation.
+
+### 2026-08-22 — Go HTTP instrumentation
+
+- Added `net/http` middleware that creates server spans with normalized route, method, response status, duration, and the active OpenTelemetry context.
+- The route resolver allows application routers to provide a low-cardinality route template instead of recording raw paths.
+- Evidence: `go test ./...` passed in `sdk/go`, covering successful and failing HTTP handlers using a high-cardinality request path with a normalized route.
+- Next unit: task 4.3, add correlated `slog` integration.
+
+### 2026-08-22 — Go structured log correlation
+
+- Added an idiomatic `slog.Handler` adapter that preserves downstream logging and emits the original message, severity, attributes, and active trace/span identifiers to a configured exporter.
+- Background logs export without fabricated correlation identifiers.
+- Evidence: `go test ./...` passed in `sdk/go`.
+- Next unit: task 4.4, collect supported application-host measurements.
+
+### 2026-08-22 — Application-host collection
+
+- Added stable-host `monitored-service` measurement collection for CPU, runtime memory, and filesystem utilization.
+- CPU is emitted only after two valid `/proc/stat` samples; unavailable CPU or filesystem measurements are omitted.
+- Evidence: `go test ./...` passed in `sdk/go`.
+- Next unit: task 4.5, add SDK buffering, retry, discard metrics, and deadline-aware shutdown.
+
+### 2026-08-22 — Bounded SDK delivery
+
+- Added a bounded asynchronous SDK delivery buffer with retry and discard counters.
+- Submission is non-blocking under backend outage or queue saturation; shutdown drains only until the caller's deadline.
+- Evidence: `go test ./... -race` passed in `sdk/go`.
+- Next unit: task 5.1, add endpoint aggregation queries.
+
+### 2026-08-22 — Endpoint aggregation query
+
+- Added a capability-local PostgreSQL endpoint summary reader with service, environment, and time-window isolation.
+- It groups by normalized route and returns request volume, server-error impact, and average operation duration.
+- Evidence: `make integration-test` passed with the TimescaleDB integration assertion confirming retransmission does not inflate summaries.
+- Next unit: task 5.2, retrieve filtered error occurrences.
+
+### 2026-08-22 — Isolated error-occurrence query
+
+- Added error-occurrence retrieval constrained by service, environment, normalized route, HTTP status, and time window.
+- Evidence: `make integration-test` passed with a real-database test proving results do not cross service or environment boundaries.
+- Next unit: task 5.3, retrieve exact-correlated logs.
