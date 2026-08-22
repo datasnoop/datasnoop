@@ -10,5 +10,6 @@ ADRs preserve structural decisions and their rationale. Specs remain the normati
 | [0004](0004-hide-opentelemetry-behind-product-ux.md) | OpenTelemetry hidden behind the default UX | Accepted |
 | [0005](0005-capability-oriented-modular-monolith.md) | Capability-oriented modular monolith | Accepted |
 | [0006](0006-at-least-once-telemetry-delivery.md) | At-least-once telemetry delivery | Accepted |
+| [0007](0007-risk-based-test-strategy.md) | Risk-based test strategy | Accepted |
 
 When replacing a decision, create a new ADR and mark the previous one as superseded; do not rewrite history.

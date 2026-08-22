@@ -13,6 +13,7 @@ The determining constraints are single-node operation on modest hardware, onboar
 - make queues, concurrency, payloads, retention, and connections observably bounded;
 - align module boundaries with durable capabilities and vertical investigation use cases;
 - tolerate at-least-once OTLP delivery without inflating endpoint summaries;
+- prove semantic correctness and user-visible investigation behavior under declared system workload profiles;
 - allow an independent OTLP exporter to replace the Go SDK;
 - distinguish platform health from monitored-application health.
 
@@ -138,6 +139,20 @@ See ADR 0006 for delivery semantics and resumption criteria.
 
 **Alternatives:** Exactly-once cannot be guaranteed at the OTLP boundary. Global payload-hash deduplication can merge legitimate data. A transactional outbox for the initial Live View adds durable messaging lifecycle without a current delivery requirement.
 
+### 11. Validate behavior through a risk-based test strategy and a system workload oracle
+
+Tests follow behavior and risk rather than duplicating the package structure. Normative spec scenarios map to automated contract, integration, system, or acceptance evidence. Unit tests cover deterministic rules; real protocol tests cover OTLP/gRPC, GraphQL and SSE mappings; and persistence tests use the supported PostgreSQL/TimescaleDB version instead of mocks or SQLite. Fixtures that establish receiver compatibility do not import the DataSnoop SDK.
+
+Concurrent correctness uses explicit synchronization, injected clocks and controllable ports rather than arbitrary sleeps. Race detection covers concurrent Go paths, and reproducible fuzz corpora exercise untrusted decoding, limits, identifiers and normalization. Coverage identifies gaps but receives no repository-wide percentage until the executable code establishes a useful baseline.
+
+The top-level workload test deploys the complete single-node system and combines deterministic OTLP producers, protocol-level read traffic and one or a few browser sentinel users. The workload oracle declares expected operations, error impact, retransmissions, correlated logs and host measurements. While telemetry is emitted, the sentinel repeats the historical journey from endpoint overview through occurrence, logs and host context, and observes Live View recovery.
+
+Versioned smoke, steady, burst, saturation, retention, recovery and soak profiles record ingestion outcomes, time to visibility, investigation latency, resource ceilings, queue and connection occupancy, SSE gaps and semantic correctness. Pull requests run fast deterministic suites and a short system smoke profile; scheduled and release pipelines run the expensive profiles. Budgets and regression tolerances are recorded only after measurement on declared hardware.
+
+See ADR 0007 for test-level boundaries and gate rationale.
+
+**Alternatives:** A quantity-based pyramid can pass without proving risky boundaries. Ingest-only load tests miss query starvation and an unusable Lounge. Browser fleets distort the workload with automation overhead. A global coverage threshold does not prove compatibility, controlled degradation or the user journey.
+
 ## Risks / Trade-offs
 
 - **[The supported OTLP subset may surprise exporters]** → publish a support matrix, use partial success, and test official exporters; never drop silently.
@@ -147,6 +162,8 @@ See ADR 0006 for delivery semantics and resumption criteria.
 - **[Live View may diverge from history]** → publish after persistence and signal gaps; history remains authoritative.
 - **[OTLP retries may redeliver accepted records]** → use documented signal-specific identity, make identifiable operations idempotent, and never promise exactly-once delivery.
 - **[One process may erode module boundaries]** → keep ports consumer-owned, restrict cross-capability imports, and verify the dependency direction automatically.
+- **[System tests may become slow or flaky]** → use deterministic datasets and synchronization, pin supported dependencies, keep pull-request profiles short, and move expensive saturation and soak profiles to scheduled gates.
+- **[Performance results vary across environments]** → record the hardware and workload with every result, compare reproducible profiles, and publish measured envelopes instead of universal estimates.
 - **[Host metrics vary across operating systems]** → start with a documented matrix and represent absence without fabricated values.
 - **[A broad vertical change increases coordination]** → establish contracts and fixtures first, use verifiable tasks, and keep the end-to-end demonstration executable throughout the work.
 
