@@ -82,7 +82,15 @@ func (reader *Reader) HostMeasurements(ctx context.Context, service, environment
 		result = append(result, item)
 	}
 	if len(result) == 0 {
-		return []investigation.HostContext{{State: "missing"}}, nil
+		var exists bool
+		if err := reader.pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM metrics JOIN services ON services.id=metrics.service_id WHERE services.name=$1 AND services.environment=$2 AND metrics.source_role='monitored-service' AND metrics.timestamp < $3)`, service, environment, at.Add(-window)).Scan(&exists); err != nil {
+			return nil, err
+		}
+		state := "missing"
+		if exists {
+			state = "stale"
+		}
+		return []investigation.HostContext{{State: state}}, nil
 	}
 	return result, rows.Err()
 }

@@ -239,3 +239,10 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added error-occurrence retrieval constrained by service, environment, normalized route, HTTP status, and time window.
 - Evidence: `make integration-test` passed with a real-database test proving results do not cross service or environment boundaries.
 - Next unit: task 5.3, retrieve exact-correlated logs.
+
+### 2026-08-22 — Correlated evidence and host context
+
+- Added exact trace/span correlated-log retrieval with severity filtering; time-adjacent logs remain excluded.
+- Added time-aligned monitored-host context with explicit `available`, `stale`, and `missing` states, without causal claims or fabricated healthy measurements.
+- Evidence: `make integration-test` passed with real TimescaleDB coverage for both behaviors.
+- Next unit: task 5.5, expose historical queries through GraphQL.
