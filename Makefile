@@ -1,4 +1,4 @@
-.PHONY: build test unit-test contract-test integration-test race-test fuzz-seed-test frontend-test system-smoke architecture-check format-check openspec-validate migration-verify index-verify persistence-verify demo-verify quality
+.PHONY: build test unit-test contract-test integration-test race-test fuzz-seed-test frontend-test system-smoke architecture-check format-check openspec-validate migration-verify index-verify persistence-verify demo-verify failure-injection-verify quality
 
 build:
 	go build ./apps/api/... ./sdk/go/ && cd apps/lounge && npm run build
@@ -40,6 +40,9 @@ persistence-verify:
 
 demo-verify:
 	go test ./sdk/go -run TestDemonstrationProducesCanonicalIncidentDataset
+
+failure-injection-verify:
+	bash scripts/verify-failure-injection.sh
 
 system-smoke:
 	bash scripts/verify-system-smoke.sh
