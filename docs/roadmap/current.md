@@ -360,3 +360,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Documented the one-shot Go SDK path and the advanced direct OTLP/gRPC exporter path without a Collector.
 - Evidence: the deterministic demo, direct OTLP contract test, `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 8.9, execute complete acceptance and final validation.
+
+### 2026-08-24 — Final acceptance
+
+- Executed the unloaded and loaded real-database investigation journeys.
+- Evidence: `make integration-test`, `make race-test` (expected local compiler prerequisite), `make fuzz-seed-test`, `make frontend-test`, `make system-smoke`, `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next eligible opportunity: adoption-oriented TypeScript/Node.js SDK, after the validated Go and direct-OTLP onboarding experience.
