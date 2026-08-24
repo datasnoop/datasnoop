@@ -292,3 +292,10 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Rejected unauthorized and unsupported updates, and exposed the active policy through a read-only platform HTTP boundary.
 - Evidence: retention unit and HTTP-boundary coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 7.2, add scheduled TimescaleDB chunk expiration with recorded outcomes.
+
+### 2026-08-24 — Recorded TimescaleDB retention cycles
+
+- Added a bounded scheduled retention runner that expires full TimescaleDB chunks for operations, logs, and metrics using the active policy.
+- Persisted each cycle's start, finish, duration, status, and failure evidence in a versioned migration.
+- Evidence: `make migration-verify` and `make persistence-verify` passed, including real-database proof that expired telemetry is removed while recent telemetry remains queryable.
+- Next unit: task 7.3, isolate retention database work from ingestion.
