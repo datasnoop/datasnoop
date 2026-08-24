@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/datasnoop/datasnoop/apps/api/internal/ingestion"
+	"github.com/datasnoop/datasnoop/apps/api/internal/ingestion/otlp"
 	"github.com/datasnoop/datasnoop/apps/api/internal/ingestion/receiver"
 	logsv1 "go.opentelemetry.io/proto/otlp/collector/logs/v1"
 	metricsv1 "go.opentelemetry.io/proto/otlp/collector/metrics/v1"
@@ -97,6 +98,29 @@ func TestOTLPPartialSuccessAndWhollyInvalidMappings(t *testing.T) {
 	}
 }
 
+func TestOfficialOTLPClientPreservesIndependentExporterSemantics(t *testing.T) {
+	sink := &recordingSink{}
+	connection := startReceiver(t, sink)
+	request := &tracev1.ExportTraceServiceRequest{}
+	decodeReceiverFixture(t, "correlated-trace.json", request)
+	contextWithToken := metadata.AppendToOutgoingContext(context.Background(), receiver.TokenMetadataKey, "test-token")
+	// This generated OTLP gRPC client is used directly; no DataSnoop SDK is imported.
+	if _, err := tracev1.NewTraceServiceClient(connection).Export(contextWithToken, request); err != nil {
+		t.Fatal(err)
+	}
+	sink.mu.Lock()
+	received := sink.lastTrace
+	sink.mu.Unlock()
+	result := otlp.NormalizeTraces(received)
+	if result.Rejected != 0 || len(result.Batch.Operations) != 1 {
+		t.Fatalf("normalized result=%#v", result)
+	}
+	operation := result.Batch.Operations[0]
+	if operation.Resource.ServiceName != "checkout" || operation.Route != "/orders" || operation.StatusCode != 500 || operation.Correlation.TraceID == "" || operation.Correlation.SpanID == "" {
+		t.Fatalf("independent exporter semantics=%#v", operation)
+	}
+}
+
 func startReceiver(t *testing.T, sink receiver.Sink) *grpc.ClientConn {
 	t.Helper()
 	listener := bufconn.Listen(1024 * 1024)
@@ -120,10 +144,11 @@ func startReceiver(t *testing.T, sink receiver.Sink) *grpc.ClientConn {
 }
 
 type recordingSink struct {
-	mu      sync.Mutex
-	logs    int
-	traces  int
-	metrics int
+	mu        sync.Mutex
+	logs      int
+	traces    int
+	metrics   int
+	lastTrace *tracev1.ExportTraceServiceRequest
 }
 
 type committingStore struct {
@@ -156,10 +181,11 @@ func (sink *recordingSink) AcceptLogs(context.Context, *logsv1.ExportLogsService
 	return nil
 }
 
-func (sink *recordingSink) AcceptTraces(context.Context, *tracev1.ExportTraceServiceRequest) error {
+func (sink *recordingSink) AcceptTraces(_ context.Context, request *tracev1.ExportTraceServiceRequest) error {
 	sink.mu.Lock()
 	defer sink.mu.Unlock()
 	sink.traces++
+	sink.lastTrace = proto.Clone(request).(*tracev1.ExportTraceServiceRequest)
 	return nil
 }
 

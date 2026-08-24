@@ -66,7 +66,7 @@ limit.
 ## 8. End-to-end validation and handoff
 
 - [x] 8.1 Create a deterministic single-service Go demonstration that emits successful requests, repeated endpoint errors, correlated `slog` records and host metrics, and verify one command produces the documented incident dataset
-- [ ] 8.2 Run the same supported telemetry path through an official OTLP exporter without the DataSnoop SDK, and verify investigation semantics match the SDK-generated dataset
+- [x] 8.2 Run the same supported telemetry path through an official OTLP exporter without the DataSnoop SDK, and verify investigation semantics match the SDK-generated dataset
 - [ ] 8.3 Add failure-injection coverage for invalid credentials, uncertain acknowledgement with retransmission, persistence outage, queue saturation, missed post-commit live publication, slow live clients, SDK shutdown timeout and interrupted purge, and verify each failure matches the corresponding spec behavior
 - [ ] 8.4 Define versioned deterministic smoke, steady, burst, saturation, concurrent-retention, recovery and soak workload profiles for the declared single-node hardware budget, including an oracle for sent operations, error impact, retransmissions, correlated logs and host measurements, and verify the generator reproduces the expected dataset
 - [ ] 8.5 Build a system workload harness that runs the complete DataSnoop deployment with real PostgreSQL/TimescaleDB, protocol-level load producers and one or a few browser sentinel users, and verify the steady profile continuously completes `endpoint errors → occurrence → correlated logs → host context` while telemetry arrives
