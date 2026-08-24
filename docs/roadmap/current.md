@@ -285,3 +285,10 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Missing logs and host measurements now have actionable integration guidance without requiring OpenTelemetry terminology.
 - Evidence: rendered diagnostics coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 7.1, add authorized retention configuration.
+
+### 2026-08-24 — Authorized retention configuration
+
+- Added a platform retention policy with a safe 30-day default and supported bounds of one to 365 days.
+- Rejected unauthorized and unsupported updates, and exposed the active policy through a read-only platform HTTP boundary.
+- Evidence: retention unit and HTTP-boundary coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 7.2, add scheduled TimescaleDB chunk expiration with recorded outcomes.
