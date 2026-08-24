@@ -312,3 +312,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Updated Lounge diagnostics to label application-host and DataSnoop-platform host data separately, including when they share one machine.
 - Evidence: platform collector and rendered Lounge tests plus `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 8.1, create the deterministic single-service demonstration.
+
+### 2026-08-24 — Deterministic single-service demonstration
+
+- Added a one-command Go demonstration that emits the canonical successful request, repeated endpoint errors, correlated log, and CPU, memory, and filesystem incident dataset.
+- Evidence: `go run ./sdk/go/cmd/single-service-demo`, `make demo-verify`, `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 8.2, reproduce the dataset through a standard OTLP exporter without the SDK.
