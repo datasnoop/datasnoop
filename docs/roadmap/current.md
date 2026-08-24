@@ -324,3 +324,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Verified the official generated OTLP/gRPC client directly against the authenticated receiver, without importing the DataSnoop SDK.
 - Evidence: the independent correlated trace retained service, route, status, and trace/span correlation through normalization; `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 8.3, consolidate failure-injection coverage.
+
+### 2026-08-24 — Failure-injection verification
+
+- Added one repeatable verification command for authentication rejection, retransmission, persistence outage, queue saturation, SSE gap and slow-client behavior, SDK shutdown deadlines, and interrupted retention work.
+- Evidence: `make failure-injection-verify` passed; the immediately preceding full quality suite, build, and strict OpenSpec validation passed.
+- Next unit: task 8.4, define deterministic workload profiles and their semantic oracle.
