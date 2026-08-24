@@ -354,3 +354,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added deterministic soak lifecycle verification for memory, goroutine, and connection trends against workload-explained bounds.
 - Evidence: workload tests plus `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 8.8, document one-shot and direct-OTLP onboarding paths.
+
+### 2026-08-24 — Onboarding paths
+
+- Documented the one-shot Go SDK path and the advanced direct OTLP/gRPC exporter path without a Collector.
+- Evidence: the deterministic demo, direct OTLP contract test, `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 8.9, execute complete acceptance and final validation.

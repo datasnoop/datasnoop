@@ -52,6 +52,8 @@ go run ./sdk/go/cmd/single-service-demo
 It emits JSON Lines for a successful request, two correlated `/orders/:orderID`
 errors, the correlated structured log, and CPU, memory, and filesystem host measurements.
 
+See [Go and direct-OTLP onboarding](docs/development/onboarding.md) for the one-shot SDK path and the advanced exporter path.
+
 ## Architecture principles
 
 - Deliver a complete user outcome before broad component coverage.
