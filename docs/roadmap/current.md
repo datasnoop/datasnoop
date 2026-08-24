@@ -266,3 +266,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added rendered UI coverage for loading, empty, populated, and degraded states.
 - Evidence: `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 6.3, build occurrence and operation detail views.
+
+### 2026-08-24 — Lounge incident detail
+
+- Added an endpoint occurrence detail with status and severity filters, correlated logs, and explicit non-causal host context.
+- Evidence: rendered journey UI coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 6.4, build bounded Live View recovery states.

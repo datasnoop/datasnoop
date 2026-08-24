@@ -61,6 +61,34 @@ export function App() {
         </select>
       </label>
       <Overview />
+      <IncidentDetail />
     </main>
+  );
+}
+
+export function IncidentDetail() {
+  return (
+    <section aria-label="Incident detail">
+      <h2>Failed request</h2>
+      <p>GET /orders/:orderID — 500 — 88 ms</p>
+      <label>
+        Status{" "}
+        <select defaultValue="500">
+          <option>500</option>
+        </select>
+      </label>
+      <label>
+        Log severity{" "}
+        <select defaultValue="ERROR">
+          <option>ERROR</option>
+        </select>
+      </label>
+      <h3>Correlated logs</h3>
+      <p>ERROR payment provider failed</p>
+      <h3>Host context</h3>
+      <p>
+        CPU utilization: 82% near this request. This is context, not a cause.
+      </p>
+    </section>
   );
 }

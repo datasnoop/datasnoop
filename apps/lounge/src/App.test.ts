@@ -2,11 +2,20 @@ import { expect, test } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { App, Overview } from "./App";
+import { App, IncidentDetail, Overview } from "./App";
 
 test("defines the Lounge application component", () => {
   expect(App).toBeTypeOf("function");
   expect(Overview).toBeTypeOf("function");
+  expect(IncidentDetail).toBeTypeOf("function");
+});
+
+test("renders the endpoint-to-occurrence investigation path without query syntax", () => {
+  const detail = renderToStaticMarkup(createElement(IncidentDetail));
+  expect(detail).toContain("Failed request");
+  expect(detail).toContain("Correlated logs");
+  expect(detail).toContain("Host context");
+  expect(detail).not.toContain("SELECT");
 });
 
 test("renders loading, empty, populated, and degraded overview states", () => {
