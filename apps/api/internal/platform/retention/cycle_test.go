@@ -4,8 +4,11 @@ import (
 	"context"
 	"errors"
 	"strings"
+	"sync"
 	"testing"
 	"time"
+
+	"github.com/datasnoop/datasnoop/apps/api/internal/ingestion"
 )
 
 func TestRunnerExpiresChunksAndRecordsCompletedCycle(t *testing.T) {
@@ -36,6 +39,37 @@ func TestRunnerRecordsFailureAndScheduleHasBound(t *testing.T) {
 	}
 	if _, err := runner.Schedule(context.Background(), time.Second); err == nil {
 		t.Fatal("expected too-short schedule to be rejected")
+	}
+}
+
+func TestConcurrentRetentionDoesNotConsumeIngestionBudget(t *testing.T) {
+	database := &purgeBlockingExecutor{started: make(chan struct{}), release: make(chan struct{})}
+	budget, err := NewBudget(1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	runner := NewRunner(database, func() Policy { return Policy{Duration: Default} }).WithBudget(budget)
+	first := make(chan Cycle, 1)
+	go func() { first <- runner.Run(context.Background()) }()
+	<-database.started
+	if cycle := runner.Run(context.Background()); !errors.Is(cycle.Failure, ErrWorkBudgetExhausted) {
+		t.Fatalf("overlapping cycle = %+v", cycle)
+	}
+	processor, err := ingestion.NewProcessor(ingestion.ProcessorConfig{AdmissionLimit: 1, QueueLimit: 1, Workers: 1, PersistenceTimeout: time.Second}, instantStore{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer processor.Close()
+	started := time.Now()
+	if _, err := processor.Persist(context.Background(), ingestion.Batch{}); err != nil {
+		t.Fatalf("ingestion during purge: %v", err)
+	}
+	if elapsed := time.Since(started); elapsed > 100*time.Millisecond {
+		t.Fatalf("ingestion degradation budget exceeded: %v", elapsed)
+	}
+	close(database.release)
+	if cycle := <-first; cycle.Failure != nil {
+		t.Fatalf("first cycle = %+v", cycle)
 	}
 }
 
@@ -77,3 +111,28 @@ func contains(values []string, needle string) bool {
 }
 
 func clock(value time.Time) func() time.Time { return func() time.Time { return value } }
+
+type instantStore struct{}
+
+func (instantStore) Persist(context.Context, ingestion.Batch) ingestion.Outcome {
+	return ingestion.Outcome{}
+}
+
+type purgeBlockingExecutor struct {
+	started chan struct{}
+	release chan struct{}
+	once    sync.Once
+}
+
+func (executor *purgeBlockingExecutor) Exec(ctx context.Context, query string, _ ...any) error {
+	if strings.Contains(query, "drop_chunks") {
+		executor.once.Do(func() { close(executor.started) })
+		select {
+		case <-executor.release:
+			return nil
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
+	return nil
+}

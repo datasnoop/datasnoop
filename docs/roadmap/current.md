@@ -299,3 +299,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Persisted each cycle's start, finish, duration, status, and failure evidence in a versioned migration.
 - Evidence: `make migration-verify` and `make persistence-verify` passed, including real-database proof that expired telemetry is removed while recent telemetry remains queryable.
 - Next unit: task 7.3, isolate retention database work from ingestion.
+
+### 2026-08-24 — Isolated retention work budget
+
+- Added a dedicated bounded retention database-work budget; overlapping cycles are explicitly rejected instead of globally blocking work.
+- Evidence: the concurrent purge test held a retention cycle while ingestion completed within the declared 100 ms degradation budget; `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 7.4, collect and label DataSnoop platform host metrics.

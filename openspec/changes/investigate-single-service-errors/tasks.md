@@ -60,7 +60,7 @@ limit.
 
 - [x] 7.1 Implement validated retention configuration with safe defaults and authorization, and verify unsupported values are rejected while the active policy is visible through the platform API
 - [x] 7.2 Implement scheduled TimescaleDB chunk expiration with recorded start, finish, duration and failure outcomes, and verify expired telemetry is removed while in-window telemetry remains queryable
-- [ ] 7.3 Coordinate retention with ingestion through a separate bounded database work budget rather than global blocking, and verify a concurrent purge load test keeps ingestion within the declared degradation budget
+- [x] 7.3 Coordinate retention with ingestion through a separate bounded database work budget rather than global blocking, and verify a concurrent purge load test keeps ingestion within the declared degradation budget
 - [ ] 7.4 Collect DataSnoop's own CPU, memory and disk metrics with `datasnoop-platform` role, and verify the Lounge distinguishes them from monitored-service host measurements even on the same machine
 
 ## 8. End-to-end validation and handoff
