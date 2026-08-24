@@ -259,3 +259,10 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Slow clients receive explicit `gap` events; publication never waits for a client and no durable outbox was introduced.
 - Evidence: SSE boundary and race coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 6.2, build the Lounge service overview.
+
+### 2026-08-24 — Lounge service overview
+
+- Built the service and time-window overview with endpoint request volume, errors, and duration ordered by error impact.
+- Added rendered UI coverage for loading, empty, populated, and degraded states.
+- Evidence: `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 6.3, build occurrence and operation detail views.
