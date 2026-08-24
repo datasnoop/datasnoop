@@ -342,3 +342,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added a TimescaleDB-backed system-smoke journey that persists telemetry and verifies endpoint errors, an occurrence, its correlated log, and available host context.
 - Evidence: `make system-smoke`, `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 8.6, run and record overload, retention, and recovery profiles.
+
+### 2026-08-24 — Bounded workload reports
+
+- Added validated workload reports for explicit accepted, rejected, throttled, dropped, resource, queue, visibility, latency, SSE-gap, and semantic-correctness evidence.
+- Evidence: `make workload-report-verify`, `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 8.7, run the bounded soak profile and record lifecycle evidence.

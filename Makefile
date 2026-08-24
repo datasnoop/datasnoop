@@ -44,6 +44,9 @@ demo-verify:
 workload-verify:
 	go test ./apps/api/internal/workload
 
+workload-report-verify:
+	go test ./apps/api/internal/workload -run TestReportsMakeOverloadAndRecoveryExplicit
+
 failure-injection-verify:
 	bash scripts/verify-failure-injection.sh
 
