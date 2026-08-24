@@ -348,3 +348,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added validated workload reports for explicit accepted, rejected, throttled, dropped, resource, queue, visibility, latency, SSE-gap, and semantic-correctness evidence.
 - Evidence: `make workload-report-verify`, `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 8.7, run the bounded soak profile and record lifecycle evidence.
+
+### 2026-08-24 — Soak lifecycle bounds
+
+- Added deterministic soak lifecycle verification for memory, goroutine, and connection trends against workload-explained bounds.
+- Evidence: workload tests plus `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 8.8, document one-shot and direct-OTLP onboarding paths.
