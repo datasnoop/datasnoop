@@ -336,3 +336,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added versioned smoke, steady, burst, saturation, concurrent-retention, recovery, and soak profiles with a deterministic operation, error, retransmission, log, and host-measurement oracle.
 - Evidence: `make workload-verify`, `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 8.5, build the complete deployment workload harness.
+
+### 2026-08-24 — Real-database system smoke harness
+
+- Added a TimescaleDB-backed system-smoke journey that persists telemetry and verifies endpoint errors, an occurrence, its correlated log, and available host context.
+- Evidence: `make system-smoke`, `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 8.6, run and record overload, retention, and recovery profiles.
