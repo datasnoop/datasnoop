@@ -305,3 +305,10 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added a dedicated bounded retention database-work budget; overlapping cycles are explicitly rejected instead of globally blocking work.
 - Evidence: the concurrent purge test held a retention cycle while ingestion completed within the declared 100 ms degradation budget; `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 7.4, collect and label DataSnoop platform host metrics.
+
+### 2026-08-24 — DataSnoop platform host measurements
+
+- Added DataSnoop-owned process CPU, memory, and filesystem collection with the `datasnoop-platform` source role and stable host identity.
+- Updated Lounge diagnostics to label application-host and DataSnoop-platform host data separately, including when they share one machine.
+- Evidence: platform collector and rendered Lounge tests plus `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 8.1, create the deterministic single-service demonstration.

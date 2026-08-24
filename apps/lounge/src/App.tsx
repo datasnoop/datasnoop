@@ -126,9 +126,11 @@ export function LiveView({
 export function Diagnostics({
   logs = false,
   metrics = false,
+  platformMetrics = true,
 }: {
   logs?: boolean;
   metrics?: boolean;
+  platformMetrics?: boolean;
 }) {
   return (
     <section aria-label="Onboarding diagnostics">
@@ -144,7 +146,10 @@ export function Diagnostics({
           ? "connected"
           : "not observed — enable application host collection."}
       </p>
-      <p>DataSnoop platform: healthy</p>
+      <p>
+        Application host: {metrics ? "connected" : "not observed"}. DataSnoop
+        platform host: {platformMetrics ? "connected" : "not observed"}.
+      </p>
     </section>
   );
 }

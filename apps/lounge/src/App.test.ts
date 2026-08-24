@@ -17,6 +17,8 @@ test("offers actionable product guidance for missing logs and host measurements"
   expect(diagnostics).toContain("not observed");
   expect(diagnostics).toContain("slog handler");
   expect(diagnostics).toContain("application host collection");
+  expect(diagnostics).toContain("Application host");
+  expect(diagnostics).toContain("DataSnoop platform host");
 });
 
 test("shows interruption and history recovery states in Live View", () => {
