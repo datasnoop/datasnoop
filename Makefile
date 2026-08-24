@@ -41,6 +41,9 @@ persistence-verify:
 demo-verify:
 	go test ./sdk/go -run TestDemonstrationProducesCanonicalIncidentDataset
 
+workload-verify:
+	go test ./apps/api/internal/workload
+
 failure-injection-verify:
 	bash scripts/verify-failure-injection.sh
 

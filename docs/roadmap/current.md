@@ -330,3 +330,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added one repeatable verification command for authentication rejection, retransmission, persistence outage, queue saturation, SSE gap and slow-client behavior, SDK shutdown deadlines, and interrupted retention work.
 - Evidence: `make failure-injection-verify` passed; the immediately preceding full quality suite, build, and strict OpenSpec validation passed.
 - Next unit: task 8.4, define deterministic workload profiles and their semantic oracle.
+
+### 2026-08-24 — Versioned workload profiles
+
+- Added versioned smoke, steady, burst, saturation, concurrent-retention, recovery, and soak profiles with a deterministic operation, error, retransmission, log, and host-measurement oracle.
+- Evidence: `make workload-verify`, `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 8.5, build the complete deployment workload harness.
