@@ -41,6 +41,19 @@ DataSnoop is planned around five durable capabilities:
 
 The Go SDK is a reference and dogfooding implementation, not a boundary around the target audience. OTLP compatibility is intended to keep the backend accessible to other language ecosystems, while future official SDKs provide simpler, idiomatic onboarding.
 
+## Deterministic incident demonstration
+
+Run the canonical single-service incident dataset with one command:
+
+```bash
+go run ./sdk/go/cmd/single-service-demo
+```
+
+It emits JSON Lines for a successful request, two correlated `/orders/:orderID`
+errors, the correlated structured log, and CPU, memory, and filesystem host measurements.
+
+See [Go and direct-OTLP onboarding](docs/development/onboarding.md) for the one-shot SDK path and the advanced exporter path.
+
 ## Architecture principles
 
 - Deliver a complete user outcome before broad component coverage.

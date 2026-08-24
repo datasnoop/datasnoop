@@ -12,8 +12,8 @@
           "scope": {"name": "independent-fixture-exporter"},
           "spans": [
             {
-              "traceId": "102132435465768798a9babcbddcedfe",
-              "spanId": "1021324354657687",
+              "traceId": "ECEyQ1RldoeYqbq8vdzt/g==",
+              "spanId": "ECEyQ1Rldoc=",
               "kind": "SPAN_KIND_SERVER",
               "name": "POST /orders",
               "startTimeUnixNano": "1724356800000000000",
@@ -25,8 +25,8 @@
               ]
             },
             {
-              "traceId": "102132435465768798a9babcbddcedfe",
-              "spanId": "1021324354657687",
+              "traceId": "ECEyQ1RldoeYqbq8vdzt/g==",
+              "spanId": "ECEyQ1Rldoc=",
               "kind": "SPAN_KIND_SERVER",
               "name": "POST /orders",
               "startTimeUnixNano": "1724356800000000000",
