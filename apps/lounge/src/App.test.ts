@@ -2,12 +2,25 @@ import { expect, test } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { App, IncidentDetail, Overview } from "./App";
+import { App, IncidentDetail, LiveView, Overview } from "./App";
 
 test("defines the Lounge application component", () => {
   expect(App).toBeTypeOf("function");
   expect(Overview).toBeTypeOf("function");
   expect(IncidentDetail).toBeTypeOf("function");
+  expect(LiveView).toBeTypeOf("function");
+});
+
+test("shows interruption and history recovery states in Live View", () => {
+  expect(
+    renderToStaticMarkup(createElement(LiveView, { state: "connected" })),
+  ).toContain("Receiving");
+  expect(
+    renderToStaticMarkup(createElement(LiveView, { state: "interrupted" })),
+  ).toContain("Refresh history");
+  expect(
+    renderToStaticMarkup(createElement(LiveView, { state: "recovering" })),
+  ).toContain("persisted history");
 });
 
 test("renders the endpoint-to-occurrence investigation path without query syntax", () => {

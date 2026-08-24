@@ -272,3 +272,9 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added an endpoint occurrence detail with status and severity filters, correlated logs, and explicit non-causal host context.
 - Evidence: rendered journey UI coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 6.4, build bounded Live View recovery states.
+
+### 2026-08-24 — Lounge Live View
+
+- Added connected, interrupted, and persisted-history recovery states for Live View.
+- Evidence: rendered UI recovery coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 6.5, build onboarding and platform diagnostics.

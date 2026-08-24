@@ -62,6 +62,7 @@ export function App() {
       </label>
       <Overview />
       <IncidentDetail />
+      <LiveView />
     </main>
   );
 }
@@ -89,6 +90,34 @@ export function IncidentDetail() {
       <p>
         CPU utilization: 82% near this request. This is context, not a cause.
       </p>
+    </section>
+  );
+}
+
+export function LiveView({
+  state = "connected",
+}: {
+  state?: "connected" | "interrupted" | "recovering";
+}) {
+  if (state === "interrupted")
+    return (
+      <section aria-label="Live View">
+        <h2>Live View</h2>
+        <p>Live updates were interrupted and may be incomplete.</p>
+        <button>Refresh history</button>
+      </section>
+    );
+  if (state === "recovering")
+    return (
+      <section aria-label="Live View">
+        <h2>Live View</h2>
+        <p>Reconciling with persisted history…</p>
+      </section>
+    );
+  return (
+    <section aria-label="Live View">
+      <h2>Live View</h2>
+      <p>Receiving new errors and logs.</p>
     </section>
   );
 }
