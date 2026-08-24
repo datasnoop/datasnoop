@@ -63,6 +63,7 @@ export function App() {
       <Overview />
       <IncidentDetail />
       <LiveView />
+      <Diagnostics />
     </main>
   );
 }
@@ -118,6 +119,32 @@ export function LiveView({
     <section aria-label="Live View">
       <h2>Live View</h2>
       <p>Receiving new errors and logs.</p>
+    </section>
+  );
+}
+
+export function Diagnostics({
+  logs = false,
+  metrics = false,
+}: {
+  logs?: boolean;
+  metrics?: boolean;
+}) {
+  return (
+    <section aria-label="Onboarding diagnostics">
+      <h2>Connection diagnostics</h2>
+      <p>Operations: connected</p>
+      <p>
+        Logs:{" "}
+        {logs ? "connected" : "not observed — add the DataSnoop slog handler."}
+      </p>
+      <p>
+        Host measurements:{" "}
+        {metrics
+          ? "connected"
+          : "not observed — enable application host collection."}
+      </p>
+      <p>DataSnoop platform: healthy</p>
     </section>
   );
 }

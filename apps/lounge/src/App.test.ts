@@ -2,13 +2,21 @@ import { expect, test } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { App, IncidentDetail, LiveView, Overview } from "./App";
+import { App, Diagnostics, IncidentDetail, LiveView, Overview } from "./App";
 
 test("defines the Lounge application component", () => {
   expect(App).toBeTypeOf("function");
   expect(Overview).toBeTypeOf("function");
   expect(IncidentDetail).toBeTypeOf("function");
   expect(LiveView).toBeTypeOf("function");
+  expect(Diagnostics).toBeTypeOf("function");
+});
+
+test("offers actionable product guidance for missing logs and host measurements", () => {
+  const diagnostics = renderToStaticMarkup(createElement(Diagnostics));
+  expect(diagnostics).toContain("not observed");
+  expect(diagnostics).toContain("slog handler");
+  expect(diagnostics).toContain("application host collection");
 });
 
 test("shows interruption and history recovery states in Live View", () => {

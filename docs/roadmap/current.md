@@ -278,3 +278,10 @@ Continue the apply workflow for `investigate-single-service-errors` with task 3.
 - Added connected, interrupted, and persisted-history recovery states for Live View.
 - Evidence: rendered UI recovery coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
 - Next unit: task 6.5, build onboarding and platform diagnostics.
+
+### 2026-08-24 — Lounge onboarding diagnostics
+
+- Added product-oriented connected-signal and platform-health diagnostics.
+- Missing logs and host measurements now have actionable integration guidance without requiring OpenTelemetry terminology.
+- Evidence: rendered diagnostics coverage plus `make quality`, `make build`, and strict OpenSpec validation passed.
+- Next unit: task 7.1, add authorized retention configuration.

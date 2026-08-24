@@ -54,7 +54,7 @@ limit.
 - [x] 6.2 Build the Lounge service overview with service/time selection and endpoint rate, errors and duration ordering, and verify UI tests cover empty, loading, populated and degraded states
 - [x] 6.3 Build endpoint occurrence and operation detail views with correlated logs, supported filters and host context, and verify a user can navigate the complete incident path without entering a query language
 - [x] 6.4 Build the bounded Live View with interruption and recovery states, and verify persisted history reconciles the view after reconnection
-- [ ] 6.5 Build onboarding and platform diagnostics showing connected signal categories, ingestion failures and application-host versus DataSnoop-platform health, and verify missing logs or metrics produce actionable non-OpenTelemetry guidance
+- [x] 6.5 Build onboarding and platform diagnostics showing connected signal categories, ingestion failures and application-host versus DataSnoop-platform health, and verify missing logs or metrics produce actionable non-OpenTelemetry guidance
 
 ## 7. Retention and platform operation
 
